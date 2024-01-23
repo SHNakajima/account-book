@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\Auth\LineOAuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +24,17 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+// line OAuth 2.1
+Route::prefix('auth/line')
+->controller(LineOAuthController::class)
+->group(function () {
+    // LINEの認証画面に遷移
+    Route::get('/', 'redirectToProvider')->name('line.login');
+    // 認証後にリダイレクトされるURL(コールバックURL)
+    Route::get('/callback', 'handleProviderCallback');
+});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
