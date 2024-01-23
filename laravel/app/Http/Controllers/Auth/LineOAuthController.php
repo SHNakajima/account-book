@@ -45,6 +45,11 @@ class LineOAuthController extends Controller
         logger("code", $code);
         logger("token_info", $token_info);
         logger("user_info", $user_info);
+
+        // TODO: ユーザー登録
+        // ログイン
+        // アクセストークンの保存
+        // indexページへ遷移
     }
 
     private function fetchUserInfo($access_token)
