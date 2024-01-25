@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
+use App\Models\LineOAuthToken;
+use App\Models\User;
+use Carbon\Carbon;
 
 class LineOAuthController extends Controller
 {
@@ -42,13 +45,42 @@ class LineOAuthController extends Controller
         $token_info = $this->fetchTokenInfo($code);
         $user_info = $this->fetchUserInfo($token_info->access_token);
         //  ログイン処理
-        logger("code", $code);
-        logger("token_info", $token_info);
-        logger("user_info", $user_info);
+        // dump($code);
+        // dump($token_info);
+        // dump($user_info);
+        // dump(array_merge((array)$user_info, (array)$token_info));
+        // return;
+
+        // アクセストークンの保存・更新
+        $token = LineOAuthToken::where('user_id', $user_info->userId)->first();
+        if ($token === null) {
+            // ユーザー登録
+            $newUser = User::create([
+                'name' => $user_info->displayName,
+                'picture_url' => $user_info->pictureUrl
+            ]);
+            
+            // トークン登録
+            $newToken = LineOAuthToken::create(
+                [
+                    'user_id' => $user_info->userId,
+                    'line_user_id' => $newUser->id,
+                    'access_token' => $token_info->access_token,
+                    'token_type' => $token_info->token_type,
+                    'refresh_token' => $token_info->refresh_token,
+                    'expires_at' => Carbon::now()->addSeconds($token_info->expires_in),
+                    'scope' => $token_info->scope,
+                    'id_token' => $token_info->id_token
+                ]
+            );
+        }
+
+        dump($newUser);
+        dump($newToken);
 
         // TODO: ユーザー登録
+
         // ログイン
-        // アクセストークンの保存
         // indexページへ遷移
     }
 
