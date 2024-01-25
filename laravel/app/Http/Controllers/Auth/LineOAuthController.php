@@ -21,9 +21,9 @@ class LineOAuthController extends Controller
     private $callback_url;
 
     public function __construct() {
-        $this->client_id = Config('line.client_id');
-        $this->client_secret = Config('line.client_secret');
-        $this->callback_url = Config('line.callback_url');
+        $this->client_id = Config('line.login.client_id');
+        $this->client_secret = Config('line.login.client_secret');
+        $this->callback_url = Config('line.login.callback_url');
     }
 
     public function redirectToProvider()

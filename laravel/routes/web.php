@@ -35,6 +35,9 @@ Route::prefix('auth/line')
     Route::get('/callback', 'handleProviderCallback');
 });
 
+// Line messaging api
+Route::post('/line/webhook/message', 'App\Http\Controllers\LineWebhookController@webhook')->name('line.webhook.message');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
