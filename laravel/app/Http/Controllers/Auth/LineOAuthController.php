@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use App\Models\LineOAuthToken;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LineOAuthController extends Controller
 {
@@ -44,27 +45,22 @@ class LineOAuthController extends Controller
         $code = $request->query('code');
         $token_info = $this->fetchTokenInfo($code);
         $user_info = $this->fetchUserInfo($token_info->access_token);
-        //  ログイン処理
-        // dump($code);
-        // dump($token_info);
-        // dump($user_info);
-        // dump(array_merge((array)$user_info, (array)$token_info));
-        // return;
 
         // アクセストークンの保存・更新
-        $token = LineOAuthToken::where('user_id', $user_info->userId)->first();
+        $token = LineOAuthToken::where('line_user_id', $user_info->userId)->first();
         if ($token === null) {
-            // ユーザー登録
-            $newUser = User::create([
+
+            // ログインチェック
+            $user = User::create([
                 'name' => $user_info->displayName,
                 'picture_url' => $user_info->pictureUrl
             ]);
             
             // トークン登録
-            $newToken = LineOAuthToken::create(
+            LineOAuthToken::create(
                 [
-                    'user_id' => $user_info->userId,
-                    'line_user_id' => $newUser->id,
+                    'user_id' => $user->id,
+                    'line_user_id' => $user_info->userId,
                     'access_token' => $token_info->access_token,
                     'token_type' => $token_info->token_type,
                     'refresh_token' => $token_info->refresh_token,
@@ -73,15 +69,14 @@ class LineOAuthController extends Controller
                     'id_token' => $token_info->id_token
                 ]
             );
+        } else {
+            // トークンの期限が切れていたら更新
+            // ログイン
+            $user = $token->user;
         }
 
-        dump($newUser);
-        dump($newToken);
-
-        // TODO: ユーザー登録
-
-        // ログイン
-        // indexページへ遷移
+        Auth::guard('web')->login($user, true);
+        return redirect()->route('dashboard');
     }
 
     private function fetchUserInfo($access_token)
