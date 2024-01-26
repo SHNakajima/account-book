@@ -20,8 +20,7 @@ class AuthenticatedSessionController extends Controller
 
     public function __construct(
         LineOAuthService $lineOAuthService
-    )
-    {
+    ) {
         $this->lineOAuthService = $lineOAuthService;
     }
 
@@ -30,9 +29,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
+        return Inertia::render('Auth/LineLogin', [
             'lineRedirectUrl' => $this->lineOAuthService->getRedirectUrl()
         ]);
     }

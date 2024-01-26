@@ -21,14 +21,16 @@ class LineWebhookController extends Controller
 
     public function webhook(Request $request)
     {
+        Log::debug('webhook: reached');
         Log::debug(json_encode($request->all()));
 
         $data = $request->all();
         $events = $data['events'];
 
         if ($data['destination'] === $this->lineBotUserId) {
-            Log::debug(json_encode($events));
+            Log::debug('destination valid;');
             foreach ($events as $event) {
+                Log::debug(json_encode($events));
                 switch ($event['type']) {
                     case 'message':
                         $this->handleMessageWebhook($event);
@@ -40,6 +42,7 @@ class LineWebhookController extends Controller
             }
         }
 
+        Log::debug('event end');
         return response('');
     }
 
