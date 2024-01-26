@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use App\Services\LineOAuthService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,16 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+
+    private $lineOAuthService;
+
+    public function __construct(
+        LineOAuthService $lineOAuthService
+    )
+    {
+        $this->lineOAuthService = $lineOAuthService;
+    }
+
     /**
      * Display the login view.
      */
@@ -22,6 +33,7 @@ class AuthenticatedSessionController extends Controller
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
+            'lineRedirectUrl' => $this->lineOAuthService->getRedirectUrl()
         ]);
     }
 

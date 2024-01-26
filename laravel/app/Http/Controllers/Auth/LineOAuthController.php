@@ -10,6 +10,7 @@ use App\Models\LineOAuthToken;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LineOAuthController extends Controller
 {
@@ -20,13 +21,14 @@ class LineOAuthController extends Controller
     private $client_secret;
     private $callback_url;
 
+    // TODO:　プロバイダー化
     public function __construct() {
         $this->client_id = Config('line.login.client_id');
         $this->client_secret = Config('line.login.client_secret');
         $this->callback_url = Config('line.login.callback_url');
     }
 
-    public function redirectToProvider()
+    public function getRedirectUrl() 
     {
         $csrf_token = Str::random(32);
         $query_data = [
@@ -37,11 +39,25 @@ class LineOAuthController extends Controller
             'scope' => 'profile openid',
         ];
         $query_str = http_build_query($query_data, '', '&');
-        return redirect(self::LINE_OAUTH_URI . $query_str);
+        return self::LINE_OAUTH_URI . $query_str;
+    }
+
+    public function redirectToProvider()
+    {
+        $response = [
+            'redirectUri' => $this->getRedirectUrl()
+        ];
+
+        if (request()->inertia()){
+            return redirect()->back()->with('responseData', $response);
+        } else {
+            return response()->json($response);
+        }
     }
 
     public function handleProviderCallback(Request $request)
     {
+        Log::debug(json_encode($request->all()));
         $code = $request->query('code');
         $token_info = $this->fetchTokenInfo($code);
         $user_info = $this->fetchUserInfo($token_info->access_token);
