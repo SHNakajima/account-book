@@ -21,6 +21,8 @@ class LineWebhookController extends Controller
 
     public function webhook(Request $request)
     {
+        Log::debug(json_encode($request->all()));
+
         $data = $request->all();
         $events = $data['events'];
 
@@ -38,7 +40,7 @@ class LineWebhookController extends Controller
             }
         }
 
-        return abort(400, 'Bad Request');
+        return response('');
     }
 
     private function handleMessageWebhook($event)
