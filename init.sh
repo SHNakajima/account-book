@@ -1,7 +1,7 @@
 #bin/bash
 
 # install php & extentions
-sudo apt-get update && sudo apt-get install php8.1, composer, php8.1-curl, php8.1-xml, php8.1-sqlite, nvm
+sudo apt-get update && sudo apt-get install php8.1, composer, php8.1-curl, php8.1-xml, php8.1-sqlite, nvm, ngrok
 
 # install php packages
 composer update && composer i
