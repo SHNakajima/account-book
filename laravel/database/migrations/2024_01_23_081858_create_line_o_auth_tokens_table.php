@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('refresh_token');
             $table->date('expires_at');
             $table->string('scope');
-            $table->string('id_token');
+            $table->text('id_token');
             $table->timestamps();
 
             // 外部キー制約の追加
