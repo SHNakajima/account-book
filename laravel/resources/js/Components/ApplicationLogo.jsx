@@ -1,7 +1,7 @@
 export default function ApplicationLogo(props) {
     return (
-        <svg {...props} fill="#333333" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 345 345" xml:space="preserve">
+        <svg {...props} fill="#333333" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 345 345" xmlSpace="preserve">
             <g>
                 <path d="M203.922,233.952H93.189c-12.501,0-22.671-10.17-22.671-22.671v-83.513c0-2.762-2.238-5-5-5H9.356
 		c-5.159,0-9.356,4.197-9.356,9.356v130.63c0,5.158,4.197,9.355,9.356,9.355H24.41c1.618,0,3.143,0.788,4.079,2.108l25.405,35.859

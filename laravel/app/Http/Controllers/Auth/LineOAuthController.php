@@ -22,13 +22,14 @@ class LineOAuthController extends Controller
     private $callback_url;
 
     // TODO:　プロバイダー化
-    public function __construct() {
+    public function __construct()
+    {
         $this->client_id = Config('line.login.client_id');
         $this->client_secret = Config('line.login.client_secret');
         $this->callback_url = Config('line.login.callback_url');
     }
 
-    public function getRedirectUrl() 
+    public function getRedirectUrl()
     {
         $csrf_token = Str::random(32);
         $query_data = [
@@ -48,7 +49,7 @@ class LineOAuthController extends Controller
             'redirectUri' => $this->getRedirectUrl()
         ];
 
-        if (request()->inertia()){
+        if (request()->inertia()) {
             return redirect()->back()->with('responseData', $response);
         } else {
             return response()->json($response);
@@ -71,7 +72,7 @@ class LineOAuthController extends Controller
                 'name' => $user_info->displayName,
                 'picture_url' => $user_info->pictureUrl
             ]);
-            
+
             // トークン登録
             LineOAuthToken::create(
                 [
@@ -100,7 +101,8 @@ class LineOAuthController extends Controller
         $base_uri = ['base_uri' => self::LINE_PROFILE_API_URI];
         $method = 'GET';
         $path = 'profile';
-        $headers = ['headers' => 
+        $headers = [
+            'headers' =>
             [
                 'Authorization' => 'Bearer ' . $access_token
             ]
@@ -114,12 +116,14 @@ class LineOAuthController extends Controller
         $base_uri = ['base_uri' => self::LINE_TOKEN_API_URI];
         $method = 'POST';
         $path = 'token';
-        $headers = ['headers' => 
+        $headers = [
+            'headers' =>
             [
                 'Content-Type' => 'application/x-www-form-urlencoded'
             ]
         ];
-        $form_params = ['form_params' => 
+        $form_params = [
+            'form_params' =>
             [
                 'code'          => $code,
                 'client_id' => $this->client_id,
@@ -141,8 +145,8 @@ class LineOAuthController extends Controller
             } else {
                 $response = $client->request($method, $path, $headers);
             }
-        } catch(\Exception $ex) {
-            //　例外処理
+        } catch (\Exception $ex) {
+            Log::error($ex->getMessage());
         }
         return json_decode($response->getbody()->getcontents());
     }
