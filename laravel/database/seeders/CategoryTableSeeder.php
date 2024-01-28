@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -15,8 +16,9 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::first()->get();
-        if ($user === null) {
+        $users = User::all();
+        if ($users === null) {
+            Log::info('no users!');
             return;
         }
 
@@ -43,12 +45,15 @@ class CategoryTableSeeder extends Seeder
             'ゲーム' => 'expense',
         ];
 
-        foreach ($categories as $name => $type) {
-            Category::create([
-                'user_id' => $user->id,
-                'name' => $name,
-                'type' => $type,
-            ]);
+        foreach ($users as $user) {
+            Log::info('make seed datas on : ' & $user->name);
+            foreach ($categories as $name => $type) {
+                Category::create([
+                    'user_id' => $user->id,
+                    'name' => $name,
+                    'type' => $type,
+                ]);
+            }
         }
     }
 }

@@ -14,6 +14,12 @@ class Category extends Model
         return ucfirst($value); // データベースに格納される値が小文字であることを前提としています
     }
 
+    // 日本語のタイプを取得するアクセサ
+    public function getTypeJapaneseAttribute()
+    {
+        return $this->type === 'income' ? '収入' : '支出';
+    }
+
     // バリデーション
     public static $rules = [
         'name' => 'required|string|max:255',

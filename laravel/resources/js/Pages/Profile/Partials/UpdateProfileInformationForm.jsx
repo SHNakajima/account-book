@@ -22,7 +22,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">プロフィール</h2>
+                <h2 className="text-lg font-medium text-gray-900">編集</h2>
 
                 {/* <p className="mt-1 text-sm text-gray-600">
                     アカウントのプロフィール情報とメールアドレスを更新してください。

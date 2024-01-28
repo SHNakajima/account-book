@@ -51,4 +51,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(LineOAuthToken::class);
     }
+
+    /**
+     * lineアクセストークン
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 }

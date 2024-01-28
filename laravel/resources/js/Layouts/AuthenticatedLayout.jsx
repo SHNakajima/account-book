@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import { Transition } from '@headlessui/react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -91,25 +92,52 @@ export default function Authenticated({ user, header, children }) {
                 </div>
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            ダッシュボード
-                        </ResponsiveNavLink>
-                    </div>
-                    <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4 flex items-center">
-                            <img src={user.picture_url} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
-                            <div className="font-medium text-base text-gray-800">{user.name}</div>
-                            {/* <div className="font-medium text-sm text-gray-500">{user.email}</div> */}
+                    <Transition
+                        as="div"
+                        show={showingNavigationDropdown}
+                        enter="transition ease-out duration-300 transform"
+                        enterFrom="opacity-0 translate-x-2 scale-95"
+                        enterTo="opacity-100 translate-x-0 scale-100"
+                        leave="transition ease-in duration-200 transform"
+                        leaveFrom="opacity-100 translate-x-0 scale-100"
+                        leaveTo="opacity-0 translate-x-2 scale-95"
+                    >
+                        {/* <div className="pt-2 pb-3 space-y-1">
+                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                ダッシュボード
+                            </ResponsiveNavLink>
+                        </div> */}
+                        {/* 家計簿管理 */}
+                        <div className="pt-1 pb-1">
+                            <div className="px-4 flex items-center">
+                                <img src={user.picture_url} alt={user.name} className="w-8 h-8 rounded-full mr-2" />
+                                <div className="font-medium text-base text-gray-800">{user.name}</div>
+                            </div>
+                        </div>
+                        {/* 家計簿管理 */}
+                        <div className="pt-4 pb-1 ">
+                            <div className="px-4">
+                                <div className="font-medium text-sm text-gray-500">家計簿管理</div>
+                            </div>
+                            <div className="mt-1 pl-4 space-y-1">
+                                <ResponsiveNavLink href={'/'}>収支一覧</ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('category.list')}>カテゴリ一覧</ResponsiveNavLink>
+                            </div>
+                        </div>
+                        <div className="pt-4 pb-1 border-t border-gray-200">
+                            {/* ユーザー管理 */}
+                            <div className="px-4">
+                                <div className="font-medium text-sm text-gray-500">ユーザー管理</div>
+                            </div>
+                            <div className="mt-1 pl-4 space-y-1">
+                                <ResponsiveNavLink href={route('profile.edit')}>プロフィール</ResponsiveNavLink>
+                                <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                                    ログアウト
+                                </ResponsiveNavLink>
+                            </div>
                         </div>
 
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>プロフィール</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                ログアウト
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
+                    </Transition>
 
                 </div>
             </nav>
