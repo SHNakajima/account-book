@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\LineOAuthToken;
+use App\Services\ChatGPTService;
 use Illuminate\Support\Facades\Log;
 use LINE\Clients\MessagingApi\Model\TextMessage;
 use LINE\Laravel\Facades\LINEMessagingApi;
@@ -13,10 +14,13 @@ class LineWebhookController extends Controller
 {
 
     private $lineBotUserId;
+    private $chatGptService;
 
     public function __construct()
     {
         $this->lineBotUserId = config('line.message.bot_id');
+        $this->chatGptService = new ChatGPTService();
+
     }
 
     public function webhook(Request $request)
@@ -55,6 +59,7 @@ class LineWebhookController extends Controller
 
         if (LineOAuthToken::where('line_user_id', $source['userId'])->first() !== null) {
             $replyText = "あなたは登録済みです。: $text";
+            $this->chatGptService->analyzeText($text);
         } else {
             $replyText = "あなたはまだ登録されていません、: $text";
         }
