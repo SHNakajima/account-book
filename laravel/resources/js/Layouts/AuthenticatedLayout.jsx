@@ -120,7 +120,7 @@ export default function Authenticated({ user, header, children }) {
                                 <div className="font-medium text-sm text-gray-500">家計簿管理</div>
                             </div>
                             <div className="mt-1 pl-4 space-y-1">
-                                <ResponsiveNavLink href={'/'}>収支一覧</ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('transaction.list')}>収支一覧</ResponsiveNavLink>
                                 <ResponsiveNavLink href={route('category.list')}>カテゴリ一覧</ResponsiveNavLink>
                             </div>
                         </div>

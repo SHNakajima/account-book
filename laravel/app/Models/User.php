@@ -53,10 +53,18 @@ class User extends Authenticatable
     }
 
     /**
-     * lineアクセストークン
+     * カテゴリー
      */
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+    /**
+     * 収支履歴
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    protected $appends = ['type_japanese'];
+
     protected $fillable = ['name', 'type'];
 
     // アクセサーを定義
@@ -17,7 +19,7 @@ class Category extends Model
     // 日本語のタイプを取得するアクセサ
     public function getTypeJapaneseAttribute()
     {
-        return $this->type === 'income' ? '収入' : '支出';
+        return $this->type == 'Income' ? '収入' : '支出';
     }
 
     // バリデーション
