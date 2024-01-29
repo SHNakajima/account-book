@@ -58,8 +58,8 @@ class LineWebhookController extends Controller
         Log::debug($source);
 
         if (LineOAuthToken::where('line_user_id', $source['userId'])->first() !== null) {
-            $replyText = "あなたは登録済みです。: $text";
-            $this->chatGptService->analyzeText($text);
+            // $replyText = "あなたは登録済みです。: $text";
+            $replyText = $this->chatGptService->analyzeText($text);
         } else {
             $replyText = "あなたはまだ登録されていません、: $text";
         }
