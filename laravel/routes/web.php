@@ -19,6 +19,9 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
+Route::get('/chat/test', 'App\Services\ChatGPTService@test')->name('chat.test');
+
+
 Route::get('/', function () {
     return redirect()->route('login');
     // return Inertia::render('Welcome', [
