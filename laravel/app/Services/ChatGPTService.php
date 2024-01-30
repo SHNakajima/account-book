@@ -21,13 +21,8 @@ class ChatGPTService
 
     public function analyzeText($text)
     {
-        $allCategories = User::find(Auth::id())->categories()->get(['name'])->map(function ($c) {
-            return $c->name;
-        })->implode(',');
-        // $allCategories = User::find('1');
-        // dump($text);
-        // dump($allCategories);
-
+        $allCategories = Auth::user()->categories->pluck('name')->implode(',');
+        // dd($allCategories);
         // TODO: プロンプトのテンプレート化
         $response = $this->client->chat()->create([
             'model' => 'gpt-3.5-turbo-0613',
@@ -51,7 +46,7 @@ class ChatGPTService
                                 'items' => [
                                     'type' => 'object',
                                     'properties' => [
-                                        'ammount' => [
+                                        'amount' => [
                                             'type' => 'number',
                                             'description' => '収入もしくは支出金額',
                                         ],
@@ -77,49 +72,27 @@ class ChatGPTService
 
         $jsonObj = null;
         foreach ($response->choices as $key => $choice) {
-            dump($choice->message->functionCall->arguments);
-            $responseJson = $choice->message->functionCall->arguments;
+            try {
+                // Log::debug($choice->message->functionCall->arguments);
+                $responseJson = $choice->message->functionCall->arguments;
+                $jsonObj = json_decode($responseJson);
 
-            $jsonObj = json_decode($responseJson);
-
-            if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
-                foreach ($jsonObj as $index => $transaction) {
-                    $this->transactionService->createTransaction($transaction);
+                if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
+                    $transactionArray = $jsonObj->transactions;
+                    foreach ($transactionArray as $transaction) {
+                        $this->transactionService->createTransaction((array)$transaction);
+                    }
+                    return count($transactionArray) . "つの収支データを登録しました！";
+                } else {
+                    return "すいません、AIの気分で登録できませんでした。少し文言を変えて登録しなおしてください。。";
                 }
+            } catch (\Throwable $th) {
+                dump($th);
+                return $th->getMessage();
             }
         }
 
-
-
-        $choices = $response->choices;
-
-        dump($response->usage->totalTokens);
-        return;
-
-        try {
-            return $response['choices'][0]['message']['content'];
-        } catch (\Throwable $th) {
-            return 'error: ' . $text;
-        }
-
-        $response->id; // 'cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7'
-        $response->object; // 'text_completion'
-        $response->created; // 1589478378
-        $response->model; // 'gpt-3.5-turbo-instruct'
-
-        foreach ($response->choices as $result) {
-            $result->text; // '\n\nThis is a test'
-            $result->index; // 0
-            $result->logprobs; // null
-            $result->finishReason; // 'length' or null
-        }
-
-        $response->usage->promptTokens; // 5,
-        $response->usage->completionTokens; // 6,
-        $response->usage->totalTokens; // 11
-
-        $response->toArray(); // ['id' => 'cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7', ...]
-
+        return "エラーです。";
     }
 
     public function getModels()
@@ -138,7 +111,7 @@ class ChatGPTService
             // ...
         }
 
-        dd($response->toArray()); // ['object' => 'list', 'data' => [...]]
+        // dd($response->toArray()); // ['object' => 'list', 'data' => [...]]
     }
 
     public function test()

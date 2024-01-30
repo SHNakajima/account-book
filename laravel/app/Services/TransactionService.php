@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
@@ -20,9 +23,43 @@ class TransactionService
     $this->user = $user;
   }
 
-  public function createTransaction($transaction)
+  /**
+   * Create a new transaction.
+   *
+   * @param $transaction
+   * @return Transaction
+   * @throws ValidationException
+   */
+  public function createTransaction($transaction): Transaction
   {
-    dd($transaction);
-    return;
+    Log::debug("createTransaction");
+    Log::debug(json_encode($transaction));
+
+    // ユーザーが所有するカテゴリ名を取得します。
+    $userCategories = Auth::user()->categories;
+
+    // バリデーションルールを定義します。
+    $rules = [
+      'amount' => 'required|numeric|min:0', // 0以上の数値
+      'category' => 'required|in:' . implode(',', $userCategories->pluck('name')->toArray()), // ユーザーが所有するカテゴリの中に存在するか
+      'description' => 'required|string|max:255', // 文字列で255文字以内
+    ];
+
+    // バリデーションを実行します。
+    $validator = validator($transaction, $rules);
+
+    if ($validator->fails()) {
+      throw ValidationException::withMessages($validator->errors()->all());
+    }
+
+    // Transactionを作成します。
+    $createdTransaction = Transaction::create([
+      'user_id' => Auth::id(),
+      'category_id' => $userCategories->where('name', $transaction['category'])->first()->id,
+      'amount' => $transaction['amount'],
+      'description' => $transaction['description'],
+    ]);
+
+    return $createdTransaction;
   }
 }

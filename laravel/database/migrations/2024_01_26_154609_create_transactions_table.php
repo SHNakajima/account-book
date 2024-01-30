@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->decimal('amount', 10, 2);
             $table->text('description')->nullable();
-            $table->dateTime('transaction_date');
             $table->timestamps();
 
             // 外部キー制約

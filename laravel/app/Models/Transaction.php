@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     protected $appends = ['amount_str', 'created_at_ymd'];
 
-    protected $fillable = ['user_id', 'category_id', 'amount', 'description', 'transaction_date'];
+    protected $fillable = ['user_id', 'category_id', 'amount', 'description'];
 
     /**
      * Get the amount string for the transaction.
@@ -45,6 +45,5 @@ class Transaction extends Model
         'category_id' => 'required|integer',
         'amount' => 'required|numeric',
         'description' => 'nullable|string|max:255',
-        'transaction_date' => 'required|date',
     ];
 }

@@ -43,7 +43,6 @@ class TransactionSeeder extends Seeder
                     'category_id' => $category->id,
                     'amount' => $amount,
                     'description' => $description,
-                    'transaction_date' => $transactionDate,
                 ]);
             }
         }
