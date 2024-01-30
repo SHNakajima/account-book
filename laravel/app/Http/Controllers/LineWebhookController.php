@@ -57,10 +57,10 @@ class LineWebhookController extends Controller
         $text = $event['message']['text'];
         Log::debug($source);
 
-        $fromUser = LineOAuthToken::where('line_user_id', $source['userId'])->first()->user()->first();
-        Log::debug($fromUser);
-        if ($fromUser !== null) {
+        $lineToken = LineOAuthToken::where('line_user_id', $source['userId'])->first();
+        if ($lineToken !== null) {
             // 文字列を処理し、Transactionデータに挿入
+            $fromUser = $lineToken->user()->first();
             Log::debug($fromUser->name);
             Auth::login($fromUser);
             $replyText = $this->chatGptService->analyzeText($text);
