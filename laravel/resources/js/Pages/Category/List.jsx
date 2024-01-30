@@ -1,10 +1,18 @@
+import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import CategoryTable from './CategoryTable';
+import AddCategoryPopup from './AddCategoryPopup';
 import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
 
 export default function List({ auth, categories, status }) {
-    console.log(categories);
+    const [showPopup, setShowPopup] = useState(false);
+    const [categoryType, setCategoryType] = useState('');
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -18,7 +26,10 @@ export default function List({ auth, categories, status }) {
                         {/* 収入カテゴリ */}
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-semibold text-lg text-gray-800">収入カテゴリ</h3>
-                            <button className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
+                            <button
+                                className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                                onClick={() => {setShowPopup(true); setCategoryType('income');}}
+                            >
                                 <PlusIcon className="h-6 w-4" />
                             </button>
                         </div>
@@ -29,7 +40,10 @@ export default function List({ auth, categories, status }) {
                         {/* 支出カテゴリ */}
                         <div className="flex justify-between items-center mt-8 mb-4">
                             <h3 className="font-semibold text-lg text-gray-800">支出カテゴリ</h3>
-                            <button className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
+                            <button
+                                className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                                onClick={() => {setShowPopup(true); setCategoryType('expense');}}
+                            >
                                 <PlusIcon className="h-6 w-4" />
                             </button>
                         </div>
@@ -40,6 +54,8 @@ export default function List({ auth, categories, status }) {
                     </div>
                 </div>
             </div>
+            {showPopup && <AddCategoryPopup closePopup={togglePopup} categoryType={categoryType} />}
+
         </AuthenticatedLayout>
     );
 }

@@ -8,7 +8,7 @@ class Category extends Model
 {
     protected $appends = ['type_japanese'];
 
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['user_id', 'name', 'type'];
 
     // アクセサーを定義
     public function getTypeAttribute($value)

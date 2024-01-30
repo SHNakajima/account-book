@@ -23,19 +23,13 @@ class CategoryController extends Controller
     {
         $userId = Auth::id();
 
-        // ログインユーザーのカテゴリを取得し、categories.typeでグループ化する
         $categories = User::find($userId)->categories()
             ->orderBy('name')
             ->get(['id', 'name', 'type']);
 
-        // カテゴリを収入と支出にグループ化する
         $incomes = $categories->where('type', 'Income');
         $expenses = $categories->where('type', 'Expense');
 
-        // dd(json_encode([
-        //     'incomes' => $incomes,
-        //     'expenses' => $expenses,
-        // ]));
 
         return Inertia::render('Category/List', [
             'categories' => [
@@ -45,4 +39,22 @@ class CategoryController extends Controller
             'status' => session('status'),
         ]);
     }
+
+    public function create(Request $request): RedirectResponse
+    {
+        // dd(json_decode($request->getContent(), true));
+        $validatedData = $request->validate([
+            'name' => 'required|string|unique:categories,name,NULL,id,user_id,' . Auth::id(),
+            'type' => 'required|in:income,expense',
+        ]);
+
+        Category::create([
+            'user_id' => Auth::id(),
+            'name' => $validatedData['name'],
+            'type' => $validatedData['type'],
+        ]);
+
+        return Redirect::route('category.list');
+    }
+
 }

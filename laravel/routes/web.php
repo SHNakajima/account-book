@@ -19,7 +19,7 @@ use App\Http\Controllers\TransactionController;
 |
 */
 
-Route::get('/chat/test', 'App\Services\ChatGPTService@test')->name('chat.test');
+// Route::get('/chat/test', 'App\Services\ChatGPTService@test')->name('chat.test');
 
 
 Route::get('/', function () {
@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/category', [CategoryController::class, 'list'])->name('category.list');
+    Route::post('/category', [CategoryController::class, 'create'])->name('category.create');
     Route::get('/transaction', [TransactionController::class, 'list'])->name('transaction.list');
 });
 
