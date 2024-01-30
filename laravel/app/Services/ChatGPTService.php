@@ -10,21 +10,23 @@ use OpenAI;
 class ChatGPTService
 {
     private $client;
+    private $transactionService;
 
-    public function __construct()
+    public function __construct(TransactionService $transactionService)
     {
         $yourApiKey = getenv('OPENAI_API_KEY');
         $this->client = OpenAI::client($yourApiKey);
+        $this->transactionService = $transactionService;
     }
 
     public function analyzeText($text)
     {
-        $allCategories = User::find('1')->categories()->get(['name'])->map(function ($c) {
+        $allCategories = User::find(Auth::id())->categories()->get(['name'])->map(function ($c) {
             return $c->name;
-        })->implode(', ');
+        })->implode(',');
         // $allCategories = User::find('1');
-        dump($text);
-        dump($allCategories);
+        // dump($text);
+        // dump($allCategories);
 
         // TODO: プロンプトのテンプレート化
         $response = $this->client->chat()->create([
@@ -32,13 +34,13 @@ class ChatGPTService
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => 'inputを家計簿のtransactionデータのJsonに変換してください。カテゴリはcategoryListから適切に選択してください \n # input \n ' . $text . ' \n # categoryList \n ' . $allCategories,
+                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください \n # input \n ' . $text . ' \n # categoryList \n ' . $allCategories,
                 ],
             ],
             'functions' => [
                 [
                     'name' => 'transactionJson',
-                    'description' => '家計簿のtransactionデータのJson',
+                    'description' => '抽出された特徴を JSON として処理します。',
                     'parameters' => [
                         'type' => 'object',
                         'properties' => [
@@ -73,22 +75,25 @@ class ChatGPTService
             ],
         ]);
 
-        // $response = $this->client->threads()->createAndRun(
-        //     [
-        //         'assistant_id' => 'asst_OcI43agGi01zeuSBmQYdSxTo',
-        //         'thread' => [
-        //             'messages' =>
-        //                 [
-        //                     [
-        //                         'role' => 'user',
-        //                         'content' => '給料で1万円',
-        //                     ],
-        //                 ],
-        //         ],
-        //     ],
-        // );
+        $jsonObj = null;
+        foreach ($response->choices as $key => $choice) {
+            dump($choice->message->functionCall->arguments);
+            $responseJson = $choice->message->functionCall->arguments;
 
-        dump($response);
+            $jsonObj = json_decode($responseJson);
+
+            if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
+                foreach ($jsonObj as $index => $transaction) {
+                    $this->transactionService->createTransaction($transaction);
+                }
+            }
+        }
+
+
+
+        $choices = $response->choices;
+
+        dump($response->usage->totalTokens);
         return;
 
         try {
