@@ -21,15 +21,19 @@ class ChatGPTService
 
     public function analyzeText($text)
     {
-        $allCategories = Auth::user()->categories->pluck('name')->implode(',');
-        // dd($allCategories);
+        $userCategories = Auth::user()->categories;
+        if ($userCategories->count() == 0) {
+            return "カテゴリーがまだ登録されていないようです。。URLから登録をお願いします！ \n" . route('category.list');
+        }
+        $categoryListStr = $userCategories->pluck('name')->implode(',');
+        // dd($categoryListStr);
         // TODO: プロンプトのテンプレート化
         $response = $this->client->chat()->create([
             'model' => 'gpt-3.5-turbo-0613',
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください \n # input \n ' . $text . ' \n # categoryList \n ' . $allCategories,
+                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
                 ],
             ],
             'functions' => [
