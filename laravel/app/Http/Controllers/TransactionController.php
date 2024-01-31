@@ -26,7 +26,7 @@ class TransactionController extends Controller
 
         $transactions = User::find($userId)->transactions()
             ->with('category')
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         // dd(json_encode($transactions));

@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\Auth\LineOAuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,14 +24,14 @@ use App\Http\Controllers\TransactionController;
 // Route::get('/chat/test', 'App\Services\ChatGPTService@test')->name('chat.test');
 
 
+
+Route::get('/login/test', function () {
+    Auth::login(User::find(1));
+    return redirect()->route('dashboard');
+});
+
 Route::get('/', function () {
     return redirect()->route('login');
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
 });
 
 // line OAuth 2.1
@@ -58,6 +60,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/category', [CategoryController::class, 'list'])->name('category.list');
     Route::post('/category', [CategoryController::class, 'create'])->name('category.create');
+    Route::delete('/category', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::delete('/transaction', [CategoryController::class, 'delete'])->name('transaction.delete');
     Route::get('/transaction', [TransactionController::class, 'list'])->name('transaction.list');
 });
 

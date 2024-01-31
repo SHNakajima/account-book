@@ -57,4 +57,20 @@ class CategoryController extends Controller
         return Redirect::route('category.list');
     }
 
+    public function delete(Request $request): RedirectResponse
+    {
+        // dd(json_decode($request->getContent(), true));
+        $validatedData = $request->validate([
+            'id' => 'required|numeric|exists:categories',
+            'name' => 'required|string|exists:categories',
+        ]);
+
+        Category::where([
+            'user_id' => Auth::id(),
+            ...$validatedData,
+        ])->first()->delete();
+
+        return Redirect::route('category.list');
+    }
+
 }
