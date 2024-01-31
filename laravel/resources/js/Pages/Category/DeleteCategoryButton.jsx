@@ -7,8 +7,9 @@ import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { TrashIcon } from '@heroicons/react/24/outline';
+import DropDownHeadless from '@/Components/DropDownHeadless';
 
-export default function DeleteButton({ className = '', deletionRouteName, targetId, targetModelName }) {
+export default function DeleteCategoryButton({ className = '', deletionRouteName, targetId, targetModelName, allCategories }) {
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
     const nameInput = useRef();
 
@@ -56,7 +57,7 @@ export default function DeleteButton({ className = '', deletionRouteName, target
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600">
-                        {targetModelName}を削除すると、すべてのリソースとデータが永久に削除されます。{targetModelName}を永久に削除することを確認するには、{targetModelName}名を入力してください。
+                        {targetModelName}を削除すると、このカテゴリに紐づく収支データが「未分類」になります。{targetModelName}を永久に削除することを確認するには、{targetModelName}名を入力してください。
                     </p>
 
                     <div className="mt-6">
@@ -84,6 +85,10 @@ export default function DeleteButton({ className = '', deletionRouteName, target
                             {targetModelName}を削除
                         </DangerButton>
                     </div>
+
+                    {/* <div className="mt-4">
+                        <DropDownHeadless title="カテゴリー" items={allCategories} />
+                    </div> */}
                 </form>
             </Modal>
         </button>

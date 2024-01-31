@@ -1,5 +1,4 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
-import DeleteButton from '@/Components/DeleteButton';
+import DeleteCategoryButton from './DeleteCategoryButton';
 
 // カテゴリテーブルコンポーネント
 export default function CategoryTable({ categories }) {
@@ -20,10 +19,11 @@ export default function CategoryTable({ categories }) {
                     <tr key={category.id}>
                         <td className="px-6 py-4 whitespace-nowrap">{category.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap flex items-center justify-end">
-                            <DeleteButton
+                            <DeleteCategoryButton
                                 deletionRouteName = 'category.delete'
                                 targetId = {category.id}
                                 targetModelName = 'カテゴリ'
+                                allCategories = {categories}
                             />
                             {/* <button className="text-red-500 hover:text-red-700 flex"> 
                                 <TrashIcon className="h-5 w-5 mr-4" />
