@@ -8,6 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import DropDownHeadless from '@/Components/DropDownHeadless';
+import Dropdown from '@/Components/Dropdown';
 
 export default function DeleteCategoryButton({ className = '', deletionRouteName, targetId, targetModelName, allCategories }) {
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
@@ -61,33 +62,73 @@ export default function DeleteCategoryButton({ className = '', deletionRouteName
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="name" value={`${targetModelName}名`} className="sr-only" />
 
-                        <TextInput
-                            id="name"
-                            type="name"
-                            name="name"
-                            ref={nameInput}
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder={`${targetModelName}名`}
-                        />
+                        <div className="flex justify-end">
+                            <InputLabel htmlFor="name" value={`${targetModelName}名`} className="sr-only" />
+
+                            <TextInput
+                                id="name"
+                                type="name"
+                                name="name"
+                                ref={nameInput}
+                                value={data.name}
+                                onChange={(e) => setData('name', e.target.value)}
+                                className="mt-1 block w-3/4 h-6"
+                                isFocused
+                                placeholder={`${targetModelName}名`}
+                            />
+                            <DangerButton className="ms-3" disabled={processing}>
+                                {targetModelName}を削除
+                            </DangerButton>
+                        </div>
 
                         <InputError message={errors.name} className="mt-2" />
                     </div>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>キャンセル</SecondaryButton>
+                    <h2 className="text-base font-medium text-gray-900 mt-8">
+                        もしくは、付け替え先の{targetModelName}を選択してください。
+                    </h2>
 
+                    <div className="mt-2 flex justify-end">
+                        {/* <DropDownHeadless items={allCategories} title="カテゴリー" className="w-5/12 border-black"/> */}
+
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <span className="inline-flex rounded-md">
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                    >
+                                        付け替え先のカテゴリを選択してください
+                                        <svg
+                                            className="ms-2 -me-0.5 h-4 w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </button>
+                                </span>
+                            </Dropdown.Trigger>
+
+                            <Dropdown.Content>
+                                {Object.values(allCategories).map((item) => (
+                                    <Dropdown.Link href='#' key={item.id}>{item.name}</Dropdown.Link>
+                                ))}
+                            </Dropdown.Content>
+                        </Dropdown>
                         <DangerButton className="ms-3" disabled={processing}>
-                            {targetModelName}を削除
+                            に付け替え
                         </DangerButton>
                     </div>
 
-                    <div className="mt-4">
-                        <DropDownHeadless items={allCategories} title="カテゴリー" />
+                    <div className="mt-6 flex justify-end">
+                        <SecondaryButton onClick={closeModal}>キャンセル</SecondaryButton>
                     </div>
                 </form>
             </Modal>
