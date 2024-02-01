@@ -86,9 +86,9 @@ export default function DeleteCategoryButton({ className = '', deletionRouteName
                         </DangerButton>
                     </div>
 
-                    {/* <div className="mt-4">
-                        <DropDownHeadless title="カテゴリー" items={allCategories} />
-                    </div> */}
+                    <div className="mt-4">
+                        <DropDownHeadless items={allCategories} title="カテゴリー" />
+                    </div>
                 </form>
             </Modal>
         </button>

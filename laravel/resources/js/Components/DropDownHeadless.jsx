@@ -1,20 +1,16 @@
 import { Menu } from '@headlessui/react'
 
-export default function DropDownHeadless( Items, title ) {
+export default function DropDownHeadless({items, title}) {
     return (
         <Menu>
             <Menu.Button>{title}</Menu.Button>
             <Menu.Items>
-                {Object.values(Items).map((item) => (
-                    <Menu.Item key={item.href} as={Fragment}>
+                {Object.values(items).map((item) => (
+                    <Menu.Item key={item.id} as="div">
                         {({ active }) => (
-                            <a
-                                href={item.href}
-                                className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'
-                                    }`}
-                            >
-                                {item.label}
-                            </a>
+                            <div className={`${active ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}>
+                                item.name
+                            </div>
                         )}
                     </Menu.Item>
                 ))}
