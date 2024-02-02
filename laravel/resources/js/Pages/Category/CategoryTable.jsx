@@ -1,4 +1,5 @@
 import DeleteCategoryButton from './DeleteCategoryButton';
+import MergeCategoryButton from './MergeCategoryButton';
 
 // カテゴリテーブルコンポーネント
 export default function CategoryTable({ categories }) {
@@ -6,10 +7,13 @@ export default function CategoryTable({ categories }) {
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 divide-y">
                 <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-4/6">
                         カテゴリ名
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center justify-end mr-4">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center mr-4">
+                        付け替え
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-center mr-4">
                         削除
                     </th>
                 </tr>
@@ -17,17 +21,22 @@ export default function CategoryTable({ categories }) {
             <tbody className="bg-white divide-y divide-gray-200">
                 {Object.values(categories).map(category => (
                     <tr key={category.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">{category.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap flex items-center justify-end">
-                            <DeleteCategoryButton
+                        <td className="px-6 py-4 whitespace-nowrap w-4/6">{category.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                            <MergeCategoryButton
                                 deletionRouteName = 'category.delete'
-                                targetId = {category.id}
+                                target = {category}
                                 targetModelName = 'カテゴリ'
                                 allCategories = {categories}
                             />
-                            {/* <button className="text-red-500 hover:text-red-700 flex"> 
-                                <TrashIcon className="h-5 w-5 mr-4" />
-                            </button> */}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                            <DeleteCategoryButton
+                                deletionRouteName = 'category.migrate'
+                                target = {category}
+                                targetModelName = 'カテゴリ'
+                                allCategories = {categories}
+                            />
                         </td>
                     </tr>
                 ))}
