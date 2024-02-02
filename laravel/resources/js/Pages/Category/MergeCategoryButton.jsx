@@ -11,20 +11,20 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import DropDownHeadless from '@/Components/DropDownHeadless';
 import Dropdown from '@/Components/Dropdown';
 
-export default function MergeCategoryButton({ className = '', deletionRouteName, target, targetModelName, allCategories }) {
+export default function MergeCategoryButton({ className = '', patchRouteName, target, targetModelName, allCategories }) {
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
     const nameInput = useRef();
 
     const {
         data,
         setData,
-        delete: destroy,
+        patch,
         processing,
         reset,
         errors,
     } = useForm({
         id: target.id,
-        name: '',
+        targetId: null,
     });
 
     const confirmDeletion = () => {
@@ -34,7 +34,7 @@ export default function MergeCategoryButton({ className = '', deletionRouteName,
     const deleteUser = (e) => {
         e.preventDefault();
 
-        destroy(route(deletionRouteName), {
+        patch(route(patchRouteName), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => nameInput.current.focus(),
@@ -87,7 +87,7 @@ export default function MergeCategoryButton({ className = '', deletionRouteName,
 
                             <Dropdown.Content>
                                 {Object.values(allCategories).map((item) => (
-                                    <div  key={item.id} className='block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                    <div  key={item.id} onClick={(e) => setData('targetId', e.target.key)} className='block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
                                         {item.name}
                                     </div>
                                 ))}

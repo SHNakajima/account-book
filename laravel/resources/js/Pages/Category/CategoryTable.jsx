@@ -24,7 +24,7 @@ export default function CategoryTable({ categories }) {
                         <td className="px-6 py-4 whitespace-nowrap w-4/6">{category.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                             <MergeCategoryButton
-                                deletionRouteName = 'category.delete'
+                                patchRouteName = 'category.migrate'
                                 target = {category}
                                 targetModelName = 'カテゴリ'
                                 allCategories = {categories}
@@ -32,7 +32,7 @@ export default function CategoryTable({ categories }) {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                             <DeleteCategoryButton
-                                deletionRouteName = 'category.migrate'
+                                deletionRouteName = 'category.delete'
                                 target = {category}
                                 targetModelName = 'カテゴリ'
                                 allCategories = {categories}
