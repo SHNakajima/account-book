@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Category;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -73,8 +74,17 @@ class CategoryController extends Controller
         return Redirect::route('categories.index');
     }
 
-    public function migrate(Request $request): Response
+    public function merge(Request $request): RedirectResponse
     {
-        dd($request);
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'id' => 'required|numeric|exists:categories',
+            'targetId' => 'required|numeric|exists:categories,id',
+        ]);
+
+        $transactions = Transaction::where('category_id', $validatedData['id'])
+            ->update(['category_id' => $validatedData['targetId']]);
+
+        return Redirect::route('categories.index');
     }
 }

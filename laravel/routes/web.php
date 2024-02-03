@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories', [CategoryController::class, 'create'])->name('categories.create');
     Route::delete('/categories', [CategoryController::class, 'destroy'])->name('categories.destroy');
-    Route::patch('/categories', [CategoryController::class, 'migrate'])->name('categories.migrate');
+    Route::patch('/categories', [CategoryController::class, 'merge'])->name('categories.merge');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::delete('/transactions', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 });

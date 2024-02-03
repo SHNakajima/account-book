@@ -12,8 +12,10 @@ import DropDownHeadless from '@/Components/DropDownHeadless';
 import Dropdown from '@/Components/Dropdown';
 
 export default function MergeCategoryButton({ className = '', patchRouteName, target, targetModelName, allCategories }) {
+    const initSelectedText = "付け替え先のカテゴリを選択してください";
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
-    const nameInput = useRef();
+    const [selectedText, setSelectedText] = useState(initSelectedText);
+    const targetInput = useRef();
 
     const {
         data,
@@ -34,19 +36,29 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
     const deleteUser = (e) => {
         e.preventDefault();
 
+        console.log(data);
+
         patch(route(patchRouteName), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
-            onError: () => nameInput.current.focus(),
-            onFinish: () => reset(),
+            onError: () => targetInput.current.focus(),
+            // onFinish: () => reset(),
         });
     };
 
     const closeModal = () => {
         setConfirmingDeletion(false);
+        setSelectedText(initSelectedText);
 
         reset();
     };
+
+    const handleClick = (e) => {
+        const t = e.target;
+        console.log(t.dataset.key);
+        setData('targetId', Number(t.dataset.key));
+        setSelectedText(t.textContent);
+    }
 
     return (
         <button className={`text-red-500 hover:text-red-700 text-center ${className}`}>
@@ -66,9 +78,11 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
                                 <span className="inline-flex rounded-md">
                                     <button
                                         type="button"
+                                        ref={targetInput}
+                                        id='mergeCategoryDropdown'
                                         className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                     >
-                                        付け替え先のカテゴリを選択してください
+                                        {selectedText}
                                         <svg
                                             className="ms-2 -me-0.5 h-4 w-4"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +101,7 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
 
                             <Dropdown.Content>
                                 {Object.values(allCategories).map((item) => (
-                                    <div  key={item.id} onClick={(e) => setData('targetId', e.target.key)} className='block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                    <div key={item.id} data-key={item.id} onClick={handleClick} className='block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
                                         {item.name}
                                     </div>
                                 ))}
@@ -97,6 +111,9 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
                             に付け替え
                         </DangerButton>
                     </div>
+
+                    <InputError message={errors.id} className="mt-2" />
+                    <InputError message={errors.targetId} className="mt-2" />
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>キャンセル</SecondaryButton>
