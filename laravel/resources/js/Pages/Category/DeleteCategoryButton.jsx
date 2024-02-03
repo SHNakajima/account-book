@@ -61,7 +61,7 @@ export default function DeleteCategoryButton({ className = '', deletionRouteName
 
                     <div className="mt-6">
 
-                        <div className="flex justify-end">
+                        <div className="flex justify-end items-center">
                             <InputLabel htmlFor="name" value={`${targetModelName}名`} className="sr-only" />
 
                             <TextInput
@@ -71,7 +71,7 @@ export default function DeleteCategoryButton({ className = '', deletionRouteName
                                 ref={nameInput}
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                className="mt-1 block w-3/4 h-6"
+                                className="block w-2/3 h-8"
                                 isFocused
                                 placeholder={`${targetModelName}名`}
                             />
