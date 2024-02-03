@@ -36,13 +36,13 @@ Route::get('/', function () {
 
 // line OAuth 2.1
 Route::prefix('auth/line')
-->controller(LineOAuthController::class)
-->group(function () {
-    // LINEの認証画面に遷移
-    Route::get('/', 'redirectToProvider')->name('line.login');
-    // 認証後にリダイレクトされるURL(コールバックURL)
-    Route::get('/callback', 'handleProviderCallback');
-});
+    ->controller(LineOAuthController::class)
+    ->group(function () {
+        // LINEの認証画面に遷移
+        Route::get('/', 'redirectToProvider')->name('line.login');
+        // 認証後にリダイレクトされるURL(コールバックURL)
+        Route::get('/callback', 'handleProviderCallback');
+    });
 
 // Line messaging api
 Route::post('/line/webhook/message', 'App\Http\Controllers\LineWebhookController@webhook')->name('line.webhook.message');
@@ -58,11 +58,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/category', [CategoryController::class, 'list'])->name('category.list');
-    Route::post('/category', [CategoryController::class, 'create'])->name('category.create');
-    Route::delete('/category', [CategoryController::class, 'delete'])->name('category.delete');
-    Route::delete('/transaction', [CategoryController::class, 'delete'])->name('transaction.delete');
-    Route::get('/transaction', [TransactionController::class, 'list'])->name('transaction.list');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoryController::class, 'create'])->name('categories.create');
+    Route::delete('/categories', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::patch('/categories', [CategoryController::class, 'migrate'])->name('categories.migrate');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::delete('/transactions', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

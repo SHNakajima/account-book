@@ -20,7 +20,7 @@ class TransactionController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function list(Request $request): Response
+    public function index(Request $request): Response
     {
         $userId = Auth::id();
 
@@ -31,9 +31,14 @@ class TransactionController extends Controller
 
         // dd(json_encode($transactions));
 
-        return Inertia::render('Transaction/List', [
+        return Inertia::render('Transactions/Index', [
             'transactions' => $transactions,
             'status' => session('status'),
         ]);
+    }
+
+    public function destroy(Request $request): Response
+    {
+        dd($request);
     }
 }

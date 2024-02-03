@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/outline';
 
-export default function TransactionTable({ transactions }) {
+export default function TransactionsTable({ transactions }) {
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">

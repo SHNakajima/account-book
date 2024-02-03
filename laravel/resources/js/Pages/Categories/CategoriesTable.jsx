@@ -2,7 +2,7 @@ import DeleteCategoryButton from './DeleteCategoryButton';
 import MergeCategoryButton from './MergeCategoryButton';
 
 // カテゴリテーブルコンポーネント
-export default function CategoryTable({ categories }) {
+export default function CategoriesTable({ categories }) {
     return (
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 divide-y">
@@ -24,7 +24,7 @@ export default function CategoryTable({ categories }) {
                         <td className="px-6 py-4 whitespace-nowrap w-4/6">{category.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                             <MergeCategoryButton
-                                patchRouteName = 'category.migrate'
+                                patchRouteName = 'categories.migrate'
                                 target = {category}
                                 targetModelName = 'カテゴリ'
                                 allCategories = {categories}
@@ -32,7 +32,7 @@ export default function CategoryTable({ categories }) {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                             <DeleteCategoryButton
-                                deletionRouteName = 'category.delete'
+                                deletionRouteName = 'categories.destroy'
                                 target = {category}
                                 targetModelName = 'カテゴリ'
                                 allCategories = {categories}

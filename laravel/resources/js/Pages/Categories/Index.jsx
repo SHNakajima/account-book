@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import CategoryTable from './CategoryTable';
+import CategoriesTable from './CategoriesTable';
 import AddCategoryPopup from './AddCategoryPopup';
 import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
 
@@ -34,7 +34,7 @@ export default function List({ auth, categories, status }) {
                             </button>
                         </div>
                         <div className="ml-4">
-                            <CategoryTable categories={categories.incomes} />
+                            <CategoriesTable categories={categories.incomes} />
                         </div>
 
                         {/* 支出カテゴリ */}
@@ -49,7 +49,7 @@ export default function List({ auth, categories, status }) {
                         </div>
 
                         <div className="ml-4">
-                            <CategoryTable categories={categories.expenses} />
+                            <CategoriesTable categories={categories.expenses} />
                         </div>
                     </div>
                 </div>

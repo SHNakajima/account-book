@@ -23,7 +23,7 @@ class ChatGPTService
     {
         $userCategories = Auth::user()->categories;
         if ($userCategories->count() == 0) {
-            return "カテゴリーがまだ登録されていないようです。。URLから登録をお願いします！ \n" . route('category.list');
+            return "カテゴリーがまだ登録されていないようです。。URLから登録をお願いします！ \n" . route('categories.index');
         }
         $categoryListStr = $userCategories->pluck('name')->implode(',');
         // dd($categoryListStr);

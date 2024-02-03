@@ -19,7 +19,7 @@ class CategoryController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function list(Request $request): Response
+    public function index(Request $request): Response
     {
         $userId = Auth::id();
 
@@ -31,7 +31,7 @@ class CategoryController extends Controller
         $expenses = $categories->where('type', 'Expense');
 
 
-        return Inertia::render('Category/List', [
+        return Inertia::render('Categories/Index', [
             'categories' => [
                 'incomes' => $incomes,
                 'expenses' => $expenses,
@@ -54,10 +54,10 @@ class CategoryController extends Controller
             'type' => $validatedData['type'],
         ]);
 
-        return Redirect::route('category.list');
+        return Redirect::route('categories.index');
     }
 
-    public function delete(Request $request): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
         // dd(json_decode($request->getContent(), true));
         $validatedData = $request->validate([
@@ -70,7 +70,11 @@ class CategoryController extends Controller
             ...$validatedData,
         ])->first()->delete();
 
-        return Redirect::route('category.list');
+        return Redirect::route('categories.index');
     }
 
+    public function migrate(Request $request): Response
+    {
+        dd($request);
+    }
 }

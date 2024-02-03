@@ -17,7 +17,7 @@ export default function AddCategoryPopup({ closePopup, categoryType }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('category.create'));
+        post(route('categories.create'));
     };
 
     return (
