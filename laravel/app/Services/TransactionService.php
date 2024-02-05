@@ -70,4 +70,11 @@ class TransactionService
             ->where('category_id', $beforeId)
             ->update(['category_id' => $afterId]);
     }
+
+    public function deleteTransactionById($transactionId)
+    {
+        Transaction::authed()
+            ->find($transactionId)
+            ->delete();
+    }
 }

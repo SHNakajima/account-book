@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import CategoriesTable from './CategoriesTable';
-import AddCategoryPopup from './AddCategoryPopup';
 import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
+import { Head } from '@inertiajs/react';
+import { useState } from 'react';
+import AddCategoryPopup from './AddCategoryPopup';
+import CategoriesTable from './CategoriesTable';
 
+// TODO: Modalコンポーネントを使う
 export default function List({ auth, categories, status }) {
     const [showPopup, setShowPopup] = useState(false);
     const [categoryType, setCategoryType] = useState('');

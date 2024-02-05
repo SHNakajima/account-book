@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Services\TransactionService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,21 +18,24 @@ use Inertia\Response;
 
 class TransactionController extends Controller
 {
+    private $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
     /**
      * Display the user's profile form.
      */
     public function index(Request $request): Response
     {
-        $userId = Auth::id();
-
-        $transactions = Transaction::authed()
+        $transactions = Auth::user()->transactions()
             ->with(['category' => function ($query) {
                 return $query->withTrashed();
             }])
             ->orderBy('created_at', 'desc')
             ->get();
-
-        // dd(json_encode($transactions));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => $transactions,
@@ -39,8 +43,14 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): RedirectResponse
     {
-        dd($request);
+        $validated = $request->validate([
+            'id' => 'required|numeric|exists:transactions'
+        ]);
+
+        $this->transactionService->deleteTransactionById($validated['id']);
+
+        return redirect()->route('transactions.index');
     }
 }

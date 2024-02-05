@@ -1,15 +1,11 @@
-import { useRef, useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
+import Dropdown from '@/Components/Dropdown';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
-import { TrashIcon } from '@heroicons/react/24/outline';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
-import DropDownHeadless from '@/Components/DropDownHeadless';
-import Dropdown from '@/Components/Dropdown';
+import { useForm } from '@inertiajs/react';
+import { useRef, useState } from 'react';
 
 export default function MergeCategoryButton({ className = '', patchRouteName, target, targetModelName, allCategories }) {
     const initSelectedText = "付け替え先のカテゴリを選択";
