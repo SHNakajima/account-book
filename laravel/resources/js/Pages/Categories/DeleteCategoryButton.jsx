@@ -76,7 +76,7 @@ export default function DeleteCategoryButton({ className = '', deletionRouteName
                                 placeholder={`${targetModelName}名`}
                             />
                             <DangerButton className="ms-3" disabled={processing}>
-                                {targetModelName}を削除
+                                削除
                             </DangerButton>
                         </div>
 

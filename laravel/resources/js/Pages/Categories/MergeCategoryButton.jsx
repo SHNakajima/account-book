@@ -12,7 +12,7 @@ import DropDownHeadless from '@/Components/DropDownHeadless';
 import Dropdown from '@/Components/Dropdown';
 
 export default function MergeCategoryButton({ className = '', patchRouteName, target, targetModelName, allCategories }) {
-    const initSelectedText = "付け替え先のカテゴリを選択してください";
+    const initSelectedText = "付け替え先のカテゴリを選択";
     const [confirmingDeletion, setConfirmingDeletion] = useState(false);
     const [selectedText, setSelectedText] = useState(initSelectedText);
     const targetInput = useRef();
@@ -67,7 +67,7 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
             <Modal show={confirmingDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-base font-medium text-gray-900 mt-8">
-                        付け替え先の{targetModelName}を選択してください。
+                        付け替え先の{targetModelName}を選択
                     </h2>
 
                     <div className="mt-2 flex justify-end">
