@@ -50,22 +50,26 @@ export default function DeleteTransactionButton({ className = '', deletionRouteN
                         {targetModelName}を削除してもよろしいですか？
                     </h2>
 
-                    <div className="mt-6">
+                    <div className="mt-6 ml-4">
                         <ul>
                             <li className='flex'>
-                                <span className="font-bold basis-1/4 ">追加日：</span>
+                                <span className="font-bold basis-1/4 ">追加日</span>
+                                <span className="basis-1/12">：</span>
                                 <span className="basis-auto">{target.created_at_ymd}</span>
                             </li>
                             <li className='flex'>
-                                <span className="font-bold basis-1/4 ">カテゴリ：</span>
+                                <span className="font-bold basis-1/4 ">カテゴリ</span>
+                                <span className="basis-1/12">：</span>
                                 <span className="basis-auto">{target.category.display_name}</span>
                             </li>
                             <li className='flex'>
-                                <span className="font-bold basis-1/4 ">メモ：</span>
+                                <span className="font-bold basis-1/4 ">メモ</span>
+                                <span className="basis-1/12">：</span>
                                 <span className="basis-auto">{target.description}</span>
                             </li>
                             <li className='flex'>
-                                <span className="font-bold basis-1/4 ">金額：</span>
+                                <span className="font-bold basis-1/4 ">金額</span>
+                                <span className="basis-1/12">：</span>
                                 <span className="basis-auto">{target.amount_str}</span>
                             </li>
                         </ul>

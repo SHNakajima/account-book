@@ -3,8 +3,9 @@ import { Head } from '@inertiajs/react';
 import TransactionsTable from './TransactionsTable';
 import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
 
-export default function List({ auth, transactions, status }) {
+export default function List({ auth, transactions, allCategories, status }) {
     console.log(transactions);
+    console.log(allCategories);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -22,7 +23,10 @@ export default function List({ auth, transactions, status }) {
                             </button>
                         </div>
                         <div className="ml-4">
-                            <TransactionsTable transactions={transactions} />
+                            <TransactionsTable 
+                                transactions={transactions}
+                                allCategories={allCategories} 
+                            />
                         </div>
 
                     </div>

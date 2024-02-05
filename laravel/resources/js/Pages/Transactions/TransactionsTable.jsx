@@ -1,6 +1,8 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import DeleteTransactionButton from './DeleteTransactionButton';
-export default function TransactionsTable({ transactions }) {
+import ModifyTransactionButton from './ModifyTransactionButton';
+
+export default function TransactionsTable({ transactions, allCategories }) {
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -22,9 +24,12 @@ export default function TransactionsTable({ transactions }) {
                             <td className="px-4 py-4 whitespace-nowrap sm:whitespace-normal">{transaction.description}</td>
                             <td className="px-4 py-4 whitespace-nowrap sm:whitespace-normal">{transaction.created_at_ymd}</td>
                             <td className="px-2 py-4 whitespace-nowrap text-center">
-                                <button className="text-blue-500 hover:text-blue-700 flex items-center">
-                                    <PencilIcon className="h-5 w-5 mr-1" />
-                                </button>
+                                <ModifyTransactionButton
+                                    patchRouteName = 'transactions.update'
+                                    target = {transaction}
+                                    targetModelName = 'カテゴリ'
+                                    allCategories = {allCategories}
+                                />
                             </td>
                             <td className="px-2 py-4 whitespace-nowrap text-center">
                                 <DeleteTransactionButton

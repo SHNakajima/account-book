@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/categories', [CategoryController::class, 'destroy'])->name('categories.destroy');
     Route::patch('/categories', [CategoryController::class, 'merge'])->name('categories.merge');
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::patch('/transactions', [TransactionController::class, 'update'])->name('transactions.update');
     Route::delete('/transactions', [TransactionController::class, 'destroy'])->name('transactions.destroy');
 });
 

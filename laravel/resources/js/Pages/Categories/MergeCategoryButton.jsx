@@ -57,7 +57,7 @@ export default function MergeCategoryButton({ className = '', patchRouteName, ta
     }
 
     return (
-        <button className={`text-red-500 hover:text-red-700 text-center ${className}`}>
+        <button className={`text-blue-500 hover:text-blue-700 text-center ${className}`}>
             <ArrowPathIcon onClick={confirmDeletion} className="h-5 w-5" />
 
             <Modal show={confirmingDeletion} onClose={closeModal}>

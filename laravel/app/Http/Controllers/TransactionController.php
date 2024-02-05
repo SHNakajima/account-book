@@ -37,14 +37,29 @@ class TransactionController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $categories = Auth::user()->categories;
+
         return Inertia::render('Transactions/Index', [
             'transactions' => $transactions,
+            'allCategories' => $categories,
             'status' => session('status'),
         ]);
     }
 
     public function destroy(Request $request): RedirectResponse
     {
+        $validated = $request->validate([
+            'id' => 'required|numeric|exists:transactions'
+        ]);
+
+        $this->transactionService->deleteTransactionById($validated['id']);
+
+        return redirect()->route('transactions.index');
+    }
+
+    public function update(Request $request): RedirectResponse
+    {
+        dd($request);
         $validated = $request->validate([
             'id' => 'required|numeric|exists:transactions'
         ]);
