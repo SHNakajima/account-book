@@ -23,12 +23,13 @@ use Illuminate\Support\Facades\Auth;
 
 // Route::get('/chat/test', 'App\Services\ChatGPTService@test')->name('chat.test');
 
-
-
-Route::get('/login/test', function () {
-    Auth::login(User::find(1));
-    return redirect()->route('dashboard');
-});
+// local test routes
+if (config('app.env') == 'local') {
+    Route::get('/login/test', function () {
+        Auth::login(User::find(1));
+        return redirect()->route('dashboard');
+    });
+}
 
 Route::get('/', function () {
     return redirect()->route('login');

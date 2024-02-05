@@ -3,10 +3,16 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
+    use SoftDeletes;
+
     protected $appends = ['amount_str', 'created_at_ymd'];
 
     protected $fillable = ['user_id', 'category_id', 'amount', 'description'];
@@ -18,7 +24,7 @@ class Transaction extends Model
      */
     public function getAmountStrAttribute()
     {
-        $type = $this->category->type;
+        $type = $this->category()->withTrashed()->first()->type;
         $amount = $this->amount;
         return ($type == 'Income') ? '+' . $amount : '-' . $amount;
     }
@@ -37,6 +43,17 @@ class Transaction extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // リレーションシップの定義
+    public function categoryTrashed()
+    {
+        return $this->belongsTo(Category::class)->withTrashed();
+    }
+
+    public function scopeAuthed(Builder $builder)
+    {
+        $builder->where('user_id', Auth::id());
     }
 
     // バリデーション

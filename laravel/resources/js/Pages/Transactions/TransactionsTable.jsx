@@ -17,7 +17,7 @@ export default function TransactionsTable({ transactions }) {
                     {transactions.map(transaction => (
                         <tr key={transaction.id}>
                             <td className={`px-6 py-4 whitespace-nowrap ${transaction.category.type === 'Income' ? 'text-blue-500' : 'text-red-500'}`}>{transaction.amount_str}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{transaction.category.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{transaction.category.display_name}</td>
                             <td className="px-6 py-4 whitespace-nowrap sm:whitespace-normal">{transaction.description}</td>
                             <td className="px-6 py-4 whitespace-nowrap sm:whitespace-normal">{transaction.created_at_ymd}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-right">

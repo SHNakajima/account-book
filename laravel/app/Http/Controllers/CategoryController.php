@@ -6,10 +6,13 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Services\CategoryService;
+use App\Services\TransactionService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -17,6 +20,15 @@ use Inertia\Response;
 
 class CategoryController extends Controller
 {
+    private $categoryService;
+    private $transactionService;
+
+    public function __construct(CategoryService $categoryService, TransactionService $transactionService)
+    {
+        $this->categoryService = $categoryService;
+        $this->transactionService = $transactionService;
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -60,16 +72,12 @@ class CategoryController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        // dd(json_decode($request->getContent(), true));
         $validatedData = $request->validate([
             'id' => 'required|numeric|exists:categories',
             'name' => 'required|string|exists:categories',
         ]);
 
-        Category::where([
-            'user_id' => Auth::id(),
-            ...$validatedData,
-        ])->first()->delete();
+        $this->categoryService->deleteCategory($validatedData);
 
         return Redirect::route('categories.index');
     }
@@ -82,8 +90,7 @@ class CategoryController extends Controller
             'targetId' => 'required|numeric|exists:categories,id',
         ]);
 
-        $transactions = Transaction::where('category_id', $validatedData['id'])
-            ->update(['category_id' => $validatedData['targetId']]);
+        $this->transactionService->mergeCategory($validatedData['id'], $validatedData['targetId']);
 
         return Redirect::route('categories.index');
     }

@@ -24,8 +24,10 @@ class TransactionController extends Controller
     {
         $userId = Auth::id();
 
-        $transactions = User::find($userId)->transactions()
-            ->with('category')
+        $transactions = Transaction::authed()
+            ->with(['category' => function ($query) {
+                return $query->withTrashed();
+            }])
             ->orderBy('created_at', 'desc')
             ->get();
 

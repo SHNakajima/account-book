@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('type');
             $table->timestamps();
 
+            $table->softDeletes();
+
             // 複合ユニーク制約
             $table->unique(['user_id', 'name']);
             // 外部キー制約
