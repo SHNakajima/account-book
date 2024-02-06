@@ -107,15 +107,7 @@ class ChatGPTService
 
         $response = $this->client->models()->list();
 
-        $response->object; // 'list'
-
-        foreach ($response->data as $result) {
-            $result->id; // 'gpt-3.5-turbo-instruct'
-            $result->object; // 'model'
-            // ...
-        }
-
-        // dd($response->toArray()); // ['object' => 'list', 'data' => [...]]
+        dd($response->toArray()); // ['object' => 'list', 'data' => [...]]
     }
 
     public function test()

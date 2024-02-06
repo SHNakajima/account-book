@@ -11,17 +11,6 @@ use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
-    private $transaction;
-    private $user;
-
-
-    // TODO:　プロバイダー化
-    public function __construct(Transaction $transaction, User $user)
-    {
-        $this->transaction = $transaction;
-        $this->user = $user;
-    }
-
     /**
      * Create a new transaction.
      *
