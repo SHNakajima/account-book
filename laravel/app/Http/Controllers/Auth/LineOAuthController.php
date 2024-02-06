@@ -38,7 +38,7 @@ class LineOAuthController extends Controller
     // LINE認証のコールバック
     public function handleProviderCallback(Request $request)
     {
-        Log::debug(json_encode($request->all()));
+        // Log::debug(json_encode($request->all()));
         $code = $request->query('code');
         $token_info = $this->lineOAuthService->fetchTokenInfo($code);
         $user_info = $this->lineOAuthService->fetchUserInfo($token_info->access_token);

@@ -21,10 +21,6 @@ class LineOAuthToken extends Model
         'id_token'
     ];
 
-    protected $attributes = [
-        'user',
-    ];
-
     /**
      * user
      */
