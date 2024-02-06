@@ -8,12 +8,12 @@ use App\Models\LineOAuthToken;
 use App\Services\ChatGPTService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use LINE\Clients\MessagingApi\Model\ReplyMessageRequest;
 use LINE\Clients\MessagingApi\Model\TextMessage;
 use LINE\Laravel\Facades\LINEMessagingApi;
 
 class LineWebhookController extends Controller
 {
-
     private $lineBotUserId;
     private $chatGptService;
 
@@ -41,7 +41,6 @@ class LineWebhookController extends Controller
                         break;
                     default:
                         return abort(400, 'Bad Request');
-                        break;
                 }
             }
         }
@@ -79,9 +78,11 @@ class LineWebhookController extends Controller
             'text' => $text
         ]);
 
-        LINEMessagingApi::replyMessage([
+        $request = new ReplyMessageRequest([
             'replyToken' => $replyToken,
             'messages' => [$message],
         ]);
+
+        LINEMessagingApi::replyMessage($request);
     }
 }

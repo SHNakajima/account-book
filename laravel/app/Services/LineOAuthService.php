@@ -14,13 +14,14 @@ class LineOAuthService
     private $callback_url;
 
     // TODO:　プロバイダー化
-    public function __construct() {
+    public function __construct()
+    {
         $this->client_id = Config('line.login.client_id');
         $this->client_secret = Config('line.login.client_secret');
         $this->callback_url = Config('line.login.callback_url');
     }
 
-    public function getRedirectUrl() 
+    public function getRedirectUrl()
     {
         $csrf_token = Str::random(32);
         $query_data = [

@@ -89,7 +89,7 @@ class LineOAuthController extends Controller
         } else {
             // トークンの期限が切れていたら更新
             // ログイン
-            $user = $token->user;
+            $user = $token->user();
         }
 
         Auth::guard('web')->login($user, true);
@@ -141,12 +141,14 @@ class LineOAuthController extends Controller
         try {
             $client = new Client($base_uri);
             if ($form_params) {
-                $response = $client->request($method, $path, $form_params, $headers);
+                // $response = $client->request($method, $path, $form_params, $headers); // TODO: header不要か確認
+                $response = $client->request($method, $path, $form_params);
             } else {
                 $response = $client->request($method, $path, $headers);
             }
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
+            return json_decode($ex);
         }
         return json_decode($response->getbody()->getcontents());
     }

@@ -37,7 +37,7 @@ class TransactionSeeder extends Seeder
                 $transactionDate = Carbon::now()->subDays(rand(1, 30)); // 過去30日以内のランダムな日付
                 $amount = rand(100, 10000); // 100から10000のランダムな金額
                 $description = $category->name . "に使いました。";
-                
+
                 Transaction::create([
                     'user_id' => $user->id,
                     'category_id' => $category->id,

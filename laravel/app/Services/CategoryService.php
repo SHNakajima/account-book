@@ -13,7 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class CategoryService
 {
-
     private $category;
     private $tran;
     private $user;
@@ -36,7 +35,7 @@ class CategoryService
     public function deleteCategory($validated)
     {
         Log::debug("deleteCategory");
-        
+
         Category::where([
             'user_id' => Auth::id(),
             ...$validated,

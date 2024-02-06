@@ -15,7 +15,6 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
-
     private $lineOAuthService;
 
     public function __construct(

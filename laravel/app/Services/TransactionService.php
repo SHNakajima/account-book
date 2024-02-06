@@ -11,7 +11,6 @@ use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
-
     private $transaction;
     private $user;
 
