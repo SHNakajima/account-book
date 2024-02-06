@@ -89,7 +89,7 @@ class LineOAuthController extends Controller
         } else {
             // トークンの期限が切れていたら更新
             // ログイン
-            $user = $token->user();
+            $user = $token->user;
         }
 
         Auth::guard('web')->login($user, true);

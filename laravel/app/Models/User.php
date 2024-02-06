@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -49,7 +51,7 @@ class User extends Authenticatable
     /**
      * lineアクセストークン
      */
-    public function lineOAuthToken()
+    public function lineOAuthToken(): HasOne
     {
         return $this->hasOne(LineOAuthToken::class);
     }
@@ -57,7 +59,7 @@ class User extends Authenticatable
     /**
      * カテゴリー
      */
-    public function categories()
+    public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
     }
@@ -65,7 +67,7 @@ class User extends Authenticatable
     /**
      * 収支履歴
      */
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

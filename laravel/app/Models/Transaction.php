@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
@@ -40,13 +41,13 @@ class Transaction extends Model
     }
 
     // リレーションシップの定義
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
     // リレーションシップの定義
-    public function categoryTrashed()
+    public function categoryTrashed(): BelongsTo
     {
         return $this->belongsTo(Category::class)->withTrashed();
     }
