@@ -34,7 +34,7 @@ class TransactionController extends Controller
             ->with(['category' => function ($query) {
                 return $query->withTrashed();
             }])
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
         $categories = Auth::user()->categories;

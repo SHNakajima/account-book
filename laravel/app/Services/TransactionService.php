@@ -55,7 +55,7 @@ class TransactionService
         // Transactionを作成します。
         $createdTransaction = Transaction::create([
             'user_id' => Auth::id(),
-            'category_id' => $userCategories->where('name', $transaction['category'])->first()->id,
+            'category_id' => $userCategories->where('name', $transaction['category'])->value('id'),
             'amount' => $transaction['amount'],
             'description' => $transaction['description'],
         ]);

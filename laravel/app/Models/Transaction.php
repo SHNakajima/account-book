@@ -24,7 +24,7 @@ class Transaction extends Model
      */
     public function getAmountStrAttribute()
     {
-        $type = $this->category()->withTrashed()->first()->type;
+        $type = $this->category()->withTrashed()->value('type');
         $amount = $this->amount;
         return ($type == 'Income') ? '+' . $amount : '-' . $amount;
     }
