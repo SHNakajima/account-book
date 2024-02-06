@@ -5,7 +5,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { useForm } from "@inertiajs/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import TextInput from "@/Components/TextInput";
 import TextArea from "@/Components/TextArea";
 
@@ -17,7 +17,7 @@ export default function ModifyTransactionButton({
     allCategories,
 }) {
     const initSelectedText = target.category.display_name;
-    const [confirmingDeletion, setConfirmingDeletion] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(target.category);
     const [selectedText, setSelectedText] = useState(initSelectedText);
     const targetInput = useRef();
@@ -29,9 +29,27 @@ export default function ModifyTransactionButton({
         amount: target.amount,
     });
 
-    const confirmDeletion = () => {
-        setConfirmingDeletion(true);
+    const openModal = () => {
+        setIsOpen(true);
     };
+
+    const initForm = () => {
+        console.log('initForm');
+        setData({
+            id: target.id,
+            description: target.description,
+            categoryId: target.category.id,
+            amount: target.amount,
+        });
+        setSelected(target.category);
+        setSelectedText(initSelectedText);
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            initForm();
+        }
+    }, [isOpen]);
 
     const deleteUser = (e) => {
         e.preventDefault();
@@ -47,10 +65,9 @@ export default function ModifyTransactionButton({
     };
 
     const closeModal = () => {
-        setConfirmingDeletion(false);
+        setIsOpen(false);
         setSelectedText(initSelectedText);
-
-        reset();
+        // reset();
     };
 
     const handleClick = (e) => {
@@ -68,9 +85,9 @@ export default function ModifyTransactionButton({
         <button
             className={`text-blue-500 hover:text-blue-700 text-center ${className}`}
         >
-            <PencilIcon onClick={confirmDeletion} className="h-5 w-5" />
+            <PencilIcon onClick={openModal} className="h-5 w-5" />
 
-            <Modal show={confirmingDeletion} onClose={closeModal}>
+            <Modal show={isOpen} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-base font-medium text-gray-900 mt-2">
                         支出データを編集

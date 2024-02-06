@@ -59,12 +59,16 @@ class TransactionController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        dd($request);
+        // {"id":2,"description":"ボーナスでの臨時収入です","categoryId":2,"amount":1557}
+        // dd($request, implode(',', Auth::user()->categories->pluck('id')->toArray()));
         $validated = $request->validate([
-            'id' => 'required|numeric|exists:transactions'
+            'id' => 'required|numeric|exists:transactions',
+            'amount' => 'required|numeric|min:0', // 0以上の数値
+            'categoryId' => 'required|in:' . implode(',', Auth::user()->categories->pluck('id')->toArray()), // ユーザーが所有するカテゴリの中に存在するか
+            'description' => 'required|string|max:255', // 文字列で255文字以内
         ]);
 
-        $this->transactionService->deleteTransactionById($validated['id']);
+        $this->transactionService->updateTransaction($validated);
 
         return redirect()->route('transactions.index');
     }

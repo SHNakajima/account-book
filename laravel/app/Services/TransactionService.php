@@ -77,4 +77,15 @@ class TransactionService
             ->find($transactionId)
             ->delete();
     }
+
+    public function updateTransaction($data)
+    {
+        return Transaction::authed()
+            ->find($data['id'])
+            ->update([
+                'amount' => $data['amount'],
+                'category_id' => $data['categoryId'],
+                'description' => $data['description'],
+            ]);
+    }
 }

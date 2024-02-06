@@ -5,7 +5,7 @@ import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコン
 
 export default function List({ auth, transactions, allCategories, status }) {
     console.log(transactions);
-    console.log(allCategories);
+    // console.log(allCategories);
     return (
         <AuthenticatedLayout
             user={auth.user}
