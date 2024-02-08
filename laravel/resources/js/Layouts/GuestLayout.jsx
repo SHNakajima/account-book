@@ -1,13 +1,15 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
+import ApplicationIcon from '@/Components/ApplicationIcon';
 
 export default function Guest({ children }) {
   return (
     <div className="min-h-screen flex flex-col sm:justify-center items-center sm:pt-0 bg-gray-100">
       <div className="w-10/12 flex flex-col sm:justify-center items-center mb-10">
-        <div>
+        <div className="w-1/2 mt-8">
           <Link href="/">
-            <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
+            <ApplicationIcon className="filter-shadow " />
+            {/* <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" /> */}
           </Link>
         </div>
 
