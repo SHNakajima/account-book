@@ -1,4 +1,4 @@
-export default function ApplicationIcon({className, ...props}) {
+export default function ApplicationIcon({ className, ...props }) {
   return (
     <img
       {...props}
