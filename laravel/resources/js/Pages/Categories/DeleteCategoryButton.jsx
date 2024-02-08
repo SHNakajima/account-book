@@ -82,6 +82,7 @@ export default function DeleteCategoryButton({
                 value={data.name}
                 onChange={e => setData('name', e.target.value)}
                 className="block w-2/3 h-8"
+                required
                 isFocused
                 placeholder={`${targetModelName}名`}
               />

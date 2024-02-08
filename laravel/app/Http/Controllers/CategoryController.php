@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Category;
-use App\Models\Transaction;
 use App\Models\User;
-use App\Services\CategoryService;
-use App\Services\TransactionService;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Category;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Rules\CategoryNameUnique;
+use App\Services\CategoryService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class CategoryController extends Controller
 {
@@ -57,11 +58,11 @@ class CategoryController extends Controller
     {
         // dd(json_decode($request->getContent(), true));
         $validatedData = $request->validate([
-            'name' => 'required|string|unique:categories,name,NULL,id,user_id,' . Auth::id(),
+            'name' => new CategoryNameUnique(),
             'type' => 'required|in:income,expense',
         ]);
 
-        Category::create([
+        $this->categoryService->createCategory([
             'user_id' => Auth::id(),
             'name' => $validatedData['name'],
             'type' => $validatedData['type'],

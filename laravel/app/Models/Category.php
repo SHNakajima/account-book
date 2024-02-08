@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Category extends Model
 {
@@ -12,7 +13,7 @@ class Category extends Model
 
     protected $appends = ['type_japanese', 'display_name'];
 
-    protected $fillable = ['user_id', 'name', 'type'];
+    protected $fillable = ['user_id', 'name', 'type', 'deleted_at'];
 
     // バリデーション
     public static $rules = [
@@ -35,5 +36,10 @@ class Category extends Model
     public function getTypeJapaneseAttribute()
     {
         return $this->type == 'Income' ? '収入' : '支出';
+    }
+
+    public function scopeAuthed(Builder $builder)
+    {
+        $builder->where('user_id', Auth::id());
     }
 }

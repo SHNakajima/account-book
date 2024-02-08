@@ -14,9 +14,26 @@ use Illuminate\Validation\ValidationException;
 class CategoryService
 {
     /**
-     * Create a new transaction.
+     * Create a new category.
      *
-     * @param $transaction
+     * @param $validated
+     * @throws ValidationException
+     */
+    public function createCategory($validated)
+    {
+        Log::debug("createCategory");
+
+        Category::withTrashed()
+            ->updateOrCreate(
+                $validated,
+                ['deleted_at' => null]
+            );
+    }
+
+    /**
+     * Create a new category.
+     *
+     * @param $validated
      * @throws ValidationException
      */
     public function deleteCategory($validated)
