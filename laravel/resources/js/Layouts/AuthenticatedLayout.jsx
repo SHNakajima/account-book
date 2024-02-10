@@ -155,6 +155,9 @@ export default function Authenticated({ user, header, children }) {
                 </div>
               </div>
               <div className="mt-1 pl-4 space-y-1">
+                <ResponsiveNavLink href={route('dashboard')}>
+                  今月の収支まとめ
+                </ResponsiveNavLink>
                 <ResponsiveNavLink href={route('transactions.index')}>
                   収支一覧
                 </ResponsiveNavLink>
@@ -180,6 +183,17 @@ export default function Authenticated({ user, header, children }) {
                   as="button"
                 >
                   ログアウト
+                </ResponsiveNavLink>
+              </div>
+            </div>
+            <div className="pt-4 pb-1 border-t border-gray-200">
+              {/* その他 */}
+              <div className="px-4">
+                <div className="font-medium text-sm text-gray-500">その他</div>
+              </div>
+              <div className="mt-1 pl-4 space-y-1">
+                <ResponsiveNavLink href={route('welcome')}>
+                  使い方・ウェルカムページ
                 </ResponsiveNavLink>
               </div>
             </div>
