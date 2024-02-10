@@ -25,8 +25,8 @@ class CategoryService
 
         Category::withTrashed()
             ->updateOrCreate(
-                $validated,
-                ['deleted_at' => null]
+                collect($validated)->only(['user_id', 'name'])->toArray(),
+                ['deleted_at' => null, 'type' => $validated['type']]
             );
     }
 
