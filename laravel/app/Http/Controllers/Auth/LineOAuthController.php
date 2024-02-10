@@ -72,7 +72,9 @@ class LineOAuthController extends Controller
             $user = $token->user;
         }
 
+        $redirectRoute = $user->hasCategory() ? 'dashboard' : 'welcome';
+
         Auth::guard('web')->login($user, true);
-        return redirect()->route('dashboard');
+        return redirect()->route($redirectRoute);
     }
 }

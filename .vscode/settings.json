@@ -7,7 +7,7 @@
     "editor.tabSize": 2
   },
   "[php]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
     "editor.tabSize": 4
   },
   "cSpell.words": ["authed"]

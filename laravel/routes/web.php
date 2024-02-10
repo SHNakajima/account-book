@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LineOAuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -32,7 +33,7 @@ if (config('app.env') == 'local') {
 }
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route(RouteServiceProvider::HOME);
 });
 
 // line OAuth 2.1
@@ -48,13 +49,14 @@ Route::prefix('auth/line')
 // Line messaging api
 Route::post('/line/webhook/message', 'App\Http\Controllers\LineWebhookController@webhook')->name('line.webhook.message');
 
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+    Route::get('/welcome', function () {
+        return Inertia::render('Welcome');
+    })->name('welcome');
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

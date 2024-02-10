@@ -17,23 +17,11 @@ export default function Dashboard({ auth }) {
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div className="p-6 text-gray-900">登録ありがとうございます!</div>
             <div className="p-6 text-gray-900">
-              まずは、
-              <Link
-                href={route('categories.index')}
-                className="text-blue-800 underline decoration-dashed"
-              >
-                カテゴリ一覧
-              </Link>
-              からカテゴリ登録をお願いします！
+              この画面では、今月使用額のグラフなどが表示されます。
             </div>
             <div className="p-6 text-gray-900">
-              いくつかカテゴリを登録したら、
-              <span className="text-green-400">LINE</span>
-              で収支を教えてください。
-              <br />
-              AIが自動で収支データを登録したカテゴリに振り分けてくれます！
+              開発中ですので少々お待ちください！
             </div>
           </div>
         </div>
