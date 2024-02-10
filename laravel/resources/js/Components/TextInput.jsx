@@ -16,10 +16,7 @@ export default forwardRef(function TextInput(
     <input
       {...props}
       type={type}
-      className={
-        'pl-4  border-black focus:border-indigo-100 focus:ring-indigo-500 rounded-md shadow-sm ' +
-        className
-      }
+      className={`pl-4 border-black focus:border-indigo-100 focus:ring-indigo-500 rounded-md shadow-sm ${className}`}
       ref={input}
     />
   );
