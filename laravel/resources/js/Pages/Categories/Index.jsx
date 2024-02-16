@@ -2,9 +2,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import CategoriesTable from './CategoriesTable';
 import AddCategoryButton from './AddCategoryButton';
+import AddInitCategoriesButton from './AddInitCategoriesButton';
+import { Transition } from '@headlessui/react';
 
 // TODO: Modalコンポーネントを使う
 export default function List({ auth, categories, status }) {
+  const hasNoCategories =
+    categories.incomes.length === 0 && categories.expenses.length === 0;
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -15,7 +20,20 @@ export default function List({ auth, categories, status }) {
       }
     >
       <Head title="カテゴリ一覧" />
-
+      <Transition show={hasNoCategories}>
+        <div className="py-6">
+          <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+              <h2 className="font-semibold text-lg text-gray-800">
+                カテゴリの追加が面倒？
+              </h2>
+              <div className="flex justify-center mt-6">
+                <AddInitCategoriesButton className="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

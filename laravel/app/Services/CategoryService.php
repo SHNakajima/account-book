@@ -45,4 +45,39 @@ class CategoryService
             ...$validated,
         ])->first()->delete();
     }
+
+    public function initCategories($validated)
+    {
+
+        $categories = [
+            '給料' => 'income',
+            'ボーナス' => 'income',
+            '電気代' => 'expense',
+            'ガス代' => 'expense',
+            '水道代' => 'expense',
+            '通信費' => 'expense',
+            'サブスク' => 'expense',
+            '食費' => 'expense',
+            '外食' => 'expense',
+            '日用品' => 'expense',
+            '趣味・娯楽費' => 'expense',
+            '衣服・服飾小物' => 'expense',
+            '美容費' => 'expense',
+            '書籍' => 'expense',
+            '医療費' => 'expense',
+            '医薬品' => 'expense',
+            'ガソリン' => 'expense',
+            '交通費' => 'expense',
+            'その他' => 'expense',
+            'ゲーム' => 'expense',
+        ];
+
+        foreach ($categories as $name => $type) {
+            $this->createCategory([
+                'user_id' => Auth::id(),
+                'name' => $name,
+                'type' => $type,
+            ]);
+        }
+    }
 }

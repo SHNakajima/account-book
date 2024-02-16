@@ -54,6 +54,18 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function init(Request $request): RedirectResponse
+    {
+        // dd(json_decode($request->getContent(), true));
+        $validated = $request->validate([
+            'categoryNum' => 'required|numeric',
+        ]);
+
+        $this->categoryService->initCategories($validated);
+
+        return Redirect::route('categories.index');
+    }
+
     public function create(Request $request): RedirectResponse
     {
         // dd(json_decode($request->getContent(), true));
