@@ -10,5 +10,5 @@
     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
     "editor.tabSize": 4
   },
-  "cSpell.words": ["authed"]
+  "cSpell.words": ["authed", "heroicons", "inertiajs"]
 }

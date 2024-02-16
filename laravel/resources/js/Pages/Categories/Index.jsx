@@ -1,19 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
-import AddCategoryPopup from './AddCategoryPopup';
 import CategoriesTable from './CategoriesTable';
+import AddCategoryButton from './AddCategoryButton';
 
 // TODO: Modalコンポーネントを使う
 export default function List({ auth, categories, status }) {
-  const [showPopup, setShowPopup] = useState(false);
-  const [categoryType, setCategoryType] = useState('');
-
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
-
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -33,15 +24,7 @@ export default function List({ auth, categories, status }) {
               <h3 className="font-semibold text-lg text-gray-800">
                 収入カテゴリ
               </h3>
-              <button
-                className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
-                onClick={() => {
-                  setShowPopup(true);
-                  setCategoryType('income');
-                }}
-              >
-                <PlusIcon className="h-6 w-4" />
-              </button>
+              <AddCategoryButton categoryType="income" />
             </div>
             <div className="ml-4">
               <CategoriesTable categories={categories.incomes} />
@@ -52,15 +35,7 @@ export default function List({ auth, categories, status }) {
               <h3 className="font-semibold text-lg text-gray-800">
                 支出カテゴリ
               </h3>
-              <button
-                className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
-                onClick={() => {
-                  setShowPopup(true);
-                  setCategoryType('expense');
-                }}
-              >
-                <PlusIcon className="h-6 w-4" />
-              </button>
+              <AddCategoryButton categoryType="expense" />
             </div>
 
             <div className="ml-4">
@@ -69,12 +44,6 @@ export default function List({ auth, categories, status }) {
           </div>
         </div>
       </div>
-      {showPopup && (
-        <AddCategoryPopup
-          closePopup={togglePopup}
-          categoryType={categoryType}
-        />
-      )}
     </AuthenticatedLayout>
   );
 }
