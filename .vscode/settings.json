@@ -6,6 +6,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2
   },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
   "[php]": {
     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
     "editor.tabSize": 4
