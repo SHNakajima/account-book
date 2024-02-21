@@ -21,6 +21,12 @@ class ChatGPTService
 
     public function analyzeText($text)
     {
+        // TODO:チャットボットの機能追加
+        return $this->handleCreateTransactionMessage($text);
+    }
+
+    public function handleCreateTransactionMessage($text)
+    {
         $userCategories = Auth::user()->categories;
         if ($userCategories->count() == 0) {
             return "カテゴリーがまだ登録されていないようです。。URLから登録をお願いします！ \n" . route('categories.index');
@@ -33,7 +39,7 @@ class ChatGPTService
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
+                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください。inputに金額が含まれない場合は処理しないでください。 \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
                 ],
             ],
             'functions' => [
@@ -114,6 +120,6 @@ class ChatGPTService
     {
         // $this->getModels();
         // dd(request('text'));
-        $this->analyzeText(request('text'));
+        dd($this->analyzeText(request('text')));
     }
 }
