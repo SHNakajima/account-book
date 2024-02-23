@@ -52,6 +52,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read mixed $display_name
  * @property-read mixed $type_japanese
+ * @method static \Illuminate\Database\Eloquent\Builder|Category authed()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category onlyTrashed()
