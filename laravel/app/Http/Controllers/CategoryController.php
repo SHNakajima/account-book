@@ -38,12 +38,12 @@ class CategoryController extends Controller
         $userId = Auth::id();
 
         $categories = User::find($userId)->categories()
+            ->with('transactions')
             ->orderBy('name')
-            ->get(['id', 'name', 'type']);
+            ->get(['id', 'name', 'type', 'transaction_count']);
 
-        $incomes = $categories->where('type', 'Income');
-        $expenses = $categories->where('type', 'Expense');
-
+        $incomes = $categories->where('type', 'income');
+        $expenses = $categories->where('type', 'expense');
 
         return Inertia::render('Categories/Index', [
             'categories' => [

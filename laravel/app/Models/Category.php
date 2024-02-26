@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,14 @@ class Category extends Model
         'type' => 'required|in:income,expense',
     ];
 
-    // アクセサーを定義
-    public function getTypeAttribute($value)
+    public function transactions(): HasMany
     {
-        return ucfirst($value);
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function getTransactionCountAttribute()
+    {
+        return $this->transactions->count;
     }
 
     public function getDisplayNameAttribute()
@@ -35,7 +40,7 @@ class Category extends Model
     // 日本語のタイプを取得するアクセサ
     public function getTypeJapaneseAttribute()
     {
-        return $this->type == 'Income' ? '収入' : '支出';
+        return $this->type == 'income' ? '収入' : '支出';
     }
 
     public function scopeAuthed(Builder $builder)

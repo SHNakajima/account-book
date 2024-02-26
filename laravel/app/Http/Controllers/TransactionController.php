@@ -30,14 +30,16 @@ class TransactionController extends Controller
      */
     public function index(Request $request): Response
     {
-        $transactions = Auth::user()->transactions()
-            ->with(['category' => function ($query) {
-                return $query->withTrashed();
-            }])
+        $transactions = User::find(Auth::id())
+            ->transactions()
+            ->with('category')
             ->latest()
-            ->get();
+            ->get()
+            ->each->append('amount_str');
 
         $categories = Auth::user()->categories;
+
+        // dump(json_decode(json_encode($transactions)));
 
         return Inertia::render('Transactions/Index', [
             'transactions' => $transactions,

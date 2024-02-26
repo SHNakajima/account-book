@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,40 +15,29 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['amount_str', 'created_at_ymd'];
+    protected $appends = ['created_at_ymd'];
 
     protected $fillable = ['user_id', 'category_id', 'amount', 'description'];
 
-    /**
-     * Get the amount string for the transaction.
-     *
-     * @return string
-     */
-    public function getAmountStrAttribute()
+    protected function amountStr(): Attribute
     {
-        $type = $this->category()->withTrashed()->value('type');
-        $amount = $this->amount;
-        return ($type == 'Income') ? '+' . $amount : '-' . $amount;
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $type = $this->category->type;
+                $amount = $attributes['amount'];
+                return ($type == 'income') ? '+' . $amount : '-' . $amount;
+            }
+        );
     }
 
-    /**
-     * Get the formatted created date for the transaction.
-     *
-     * @return string
-     */
-    public function getCreatedAtYmdAttribute()
+    protected function createdAtYmd(): Attribute
     {
-        return Carbon::parse($this->created_at)->format('Y-m-d');
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => Carbon::parse($attributes['created_at'])->format('Y-m-d')
+        );
     }
 
-    // リレーションシップの定義
     public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    // リレーションシップの定義
-    public function categoryTrashed(): BelongsTo
     {
         return $this->belongsTo(Category::class)->withTrashed();
     }

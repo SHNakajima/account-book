@@ -3,6 +3,8 @@ import DeleteTransactionButton from './DeleteTransactionButton';
 import ModifyTransactionButton from './ModifyTransactionButton';
 
 export default function TransactionsTable({ transactions, allCategories }) {
+  console.log(transactions);
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -32,7 +34,7 @@ export default function TransactionsTable({ transactions, allCategories }) {
           {transactions.map(transaction => (
             <tr key={transaction.id}>
               <td
-                className={`px-4 py-4 whitespace-nowrap ${transaction.category.type === 'Income' ? 'text-blue-500' : 'text-red-500'}`}
+                className={`px-4 py-4 whitespace-nowrap ${transaction.category.type === 'income' ? 'text-blue-500' : 'text-red-500'}`}
               >
                 {transaction.amount_str}
               </td>

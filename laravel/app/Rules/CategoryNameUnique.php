@@ -10,13 +10,13 @@ class CategoryNameUnique implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        
+
         $category = Category::authed()
-        ->where('name', $value)
-        ->first();
-        
+            ->where('name', $value)
+            ->first();
+
         if (!empty($category)) {
-            if ($category->type == 'Income') {
+            if ($category->type == 'income') {
                 $fail(__('すでに収入カテゴリに存在します。'));
             } else {
                 $fail(__('すでに支出カテゴリに存在します。'));
