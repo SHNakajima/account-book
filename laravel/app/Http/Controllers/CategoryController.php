@@ -40,7 +40,8 @@ class CategoryController extends Controller
         $categories = User::find($userId)->categories()
             ->with('transactions')
             ->orderBy('name')
-            ->get(['id', 'name', 'type', 'transaction_count']);
+            ->get(['id', 'name', 'type'])
+            ->each->append('transaction_count');
 
         $incomes = $categories->where('type', 'income');
         $expenses = $categories->where('type', 'expense');

@@ -29,7 +29,7 @@ class Category extends Model
 
     public function getTransactionCountAttribute()
     {
-        return $this->transactions->count;
+        return $this->transactions->count();
     }
 
     public function getDisplayNameAttribute()
