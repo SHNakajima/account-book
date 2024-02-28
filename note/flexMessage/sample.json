@@ -1,5 +1,12 @@
 {
   "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    "size": "full",
+    "aspectRatio": "20:8",
+    "aspectMode": "cover"
+  },
   "body": {
     "type": "box",
     "layout": "vertical",
@@ -18,7 +25,7 @@
       {
         "type": "box",
         "layout": "vertical",
-        "margin": "xxl",
+        "margin": "lg",
         "spacing": "sm",
         "contents": [
           {
@@ -83,12 +90,12 @@
           },
           {
             "type": "separator",
-            "margin": "xxl"
+            "margin": "md"
           },
           {
             "type": "box",
             "layout": "horizontal",
-            "margin": "xxl",
+            "margin": "lg",
             "contents": [
               {
                 "type": "text",
@@ -165,9 +172,23 @@
       }
     ]
   },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "収支一覧で確認する",
+          "uri": "http://linecorp.com/"
+        }
+      }
+    ]
+  },
   "styles": {
     "footer": {
-      "separator": true
+      "separator": false
     }
   }
 }
