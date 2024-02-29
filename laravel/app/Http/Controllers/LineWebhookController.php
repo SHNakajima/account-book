@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\LineOAuthToken;
 use App\Services\ChatGPTService;
+use App\Services\LineMessageService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use LINE\Clients\MessagingApi\Model\ReplyMessageRequest;
-use LINE\Clients\MessagingApi\Model\TextMessage;
-use LINE\Laravel\Facades\LINEMessagingApi;
 
 class LineWebhookController extends Controller
 {
     private $lineBotUserId;
     private $chatGptService;
+    private $lineMessageService;
 
-    public function __construct(ChatGPTService $chatGPTService)
+    public function __construct(ChatGPTService $chatGPTService, LineMessageService $lineMessageService)
     {
         $this->lineBotUserId = config('line.message.bot_id');
         $this->chatGptService = $chatGPTService;
+        $this->lineMessageService = $lineMessageService;
     }
 
     public function webhook(Request $request)
@@ -51,6 +51,8 @@ class LineWebhookController extends Controller
 
     private function handleMessageWebhook($event)
     {
+        $replyText = null;
+        $messageObject = null;
         $source = $event['source'];
         $replyToken = $event['replyToken'];
         $text = $event['message']['text'];
@@ -62,27 +64,22 @@ class LineWebhookController extends Controller
             $fromUser = $lineToken->user()->first();
             Log::debug($fromUser->name);
             Auth::login($fromUser);
-            $replyText = $this->chatGptService->analyzeText($text);
+            $analyzed = $this->chatGptService->analyzeText($text);
+            Log::debug($analyzed);
+            if (is_string($analyzed)) {
+                $replyText = $analyzed;
+            } else {
+                $messageObject = $analyzed;
+            }
         } else {
             $replyText = "あなたはまだ登録されていません、まずはURLから登録をお願いします！ \n " . config('app.url');
         }
         Log::debug($event);
-        $this->replyTextMessage($replyToken, $replyText);
+        if (!is_null($replyText)) {
+            $this->lineMessageService->replyTextMessage($replyToken, $replyText);
+        } else if (!is_null($messageObject)) {
+            $this->lineMessageService->replyMessageObject($replyToken, $messageObject);
+        }
         return response('');
-    }
-
-    private function replyTextMessage($replyToken, $text)
-    {
-        $message = new TextMessage([
-            'type' => 'text',
-            'text' => $text
-        ]);
-
-        $request = new ReplyMessageRequest([
-            'replyToken' => $replyToken,
-            'messages' => [$message],
-        ]);
-
-        LINEMessagingApi::replyMessage($request);
     }
 }

@@ -5,27 +5,31 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use LINE\Clients\MessagingApi\Model\ReplyMessageRequest;
+use LINE\Clients\MessagingApi\Model\FlexMessage;
 use OpenAI;
 
 class ChatGPTService
 {
     private $client;
     private $transactionService;
+    private $lineMessageService;
 
-    public function __construct(TransactionService $transactionService)
+    public function __construct(TransactionService $transactionService, LineMessageService $lineMessageService)
     {
         $yourApiKey = getenv('OPENAI_API_KEY');
         $this->client = OpenAI::client($yourApiKey);
         $this->transactionService = $transactionService;
+        $this->lineMessageService = $lineMessageService;
     }
 
-    public function analyzeText($text)
+    public function analyzeText($text): string|FlexMessage
     {
         // TODO:チャットボットの機能追加
         return $this->handleCreateTransactionMessage($text);
     }
 
-    public function handleCreateTransactionMessage($text)
+    public function handleCreateTransactionMessage($text): string|FlexMessage
     {
         $userCategories = Auth::user()->categories;
         if ($userCategories->count() == 0) {
@@ -39,7 +43,7 @@ class ChatGPTService
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください。inputに金額が含まれない場合は処理しないでください。 \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
+                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください。inputに金額が含まれない場合は空の配列を返してください。 \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
                 ],
             ],
             'functions' => [
@@ -90,9 +94,12 @@ class ChatGPTService
                 if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
                     $transactionArray = $jsonObj->transactions;
                     foreach ($transactionArray as $transaction) {
-                        $this->transactionService->createTransaction((array)$transaction);
+                        $created = $this->transactionService->createTransaction((array)$transaction);
                     }
-                    return count($transactionArray) . "つの収支データを登録しました！";
+                    if (count($transactionArray) > 0) {
+                        return $this->lineMessageService->createTransactionMessage($created);
+                    }
+
                 } else {
                     return "すいません、AIの気分で登録できませんでした。少し文言を変えて登録しなおしてください。。";
                 }
@@ -118,8 +125,8 @@ class ChatGPTService
 
     public function test()
     {
-        // $this->getModels();
-        // dd(request('text'));
-        dd($this->analyzeText(request('text')));
+        $res = $this->analyzeText(request('text'));
+        Log::debug($res->getContents());
+        dd($res, $res->getContents());
     }
 }
