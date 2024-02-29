@@ -53,7 +53,10 @@ class LineMessageService
 
     public function createTransactionMessage($transactions): FlexMessage
     {
-        // dd($transactions);
+
+        collect($transactions)->each(function ($i) {
+            return $i->append('amount_str');
+        });
         return new FlexMessage(
             json_decode(
                 view('json/flexMessage')

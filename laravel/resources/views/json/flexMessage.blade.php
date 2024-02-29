@@ -45,7 +45,7 @@
                   },
                   {
                     "type": "text",
-                    "text": "給料",
+                    "text": "{{ $transaction->category->display_name }}",
                     "size": "sm",
                     "color": "#111111",
                     "align": "end"
@@ -85,7 +85,7 @@
                   },
                   {
                     "type": "text",
-                    "text": "{{ $transaction->amount }}",
+                    "text": "{{ $transaction->amount_str }}",
                     "size": "sm",
                     "color": "#111111",
                     "align": "end"
@@ -113,7 +113,7 @@
           "contents": [
             {
               "type": "text",
-              "text": "計： 2 件",
+              "text": "計： {{ count($transactions) }} 件",
               "color": "#aaaaaa",
               "size": "xs",
               "align": "end"
@@ -131,7 +131,7 @@
           "action": {
             "type": "uri",
             "label": "収支一覧で確認する",
-            "uri": "http://linecorp.com/"
+            "uri": "{{ config('line.liff.transactions') }}"
           }
         }
       ]

@@ -12,5 +12,9 @@ return [
         'channel_id' => env('LINE_BOT_CHANNEL_ID'),
         'channel_secret' => env('LINE_BOT_CHANNEL_SECRET'),
         'bot_id' => env('LINE_MESSAGE_BOT_ID')
+    ],
+
+    'liff' => [
+        'transactions' => env('LIFF_URL_TRANSACTIONS', 'http://linecorp.com/')
     ]
 ];
