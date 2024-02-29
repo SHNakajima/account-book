@@ -31,128 +31,75 @@
           "margin": "lg",
           "spacing": "sm",
           "contents": [
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "カテゴリ",
-                  "size": "sm",
-                  "color": "#555555",
-                  "flex": 0
-                },
-                {
-                  "type": "text",
-                  "text": "給料",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            },
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "コメント",
-                  "size": "sm",
-                  "color": "#555555",
-                  "flex": 0
-                },
-                {
-                  "type": "text",
-                  "text": "給料です",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            },
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "金額",
-                  "size": "sm",
-                  "color": "#555555",
-                  "flex": 0
-                },
-                {
-                  "type": "text",
-                  "text": "+30,000",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            },
-            {
-              "type": "separator",
-              "margin": "md"
-            },
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "margin": "lg",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "カテゴリ",
-                  "size": "sm",
-                  "color": "#555555"
-                },
-                {
-                  "type": "text",
-                  "text": "食費",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            },
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "コメント",
-                  "size": "sm",
-                  "color": "#555555"
-                },
-                {
-                  "type": "text",
-                  "text": "ランチ",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            },
-            {
-              "type": "box",
-              "layout": "horizontal",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "金額",
-                  "size": "sm",
-                  "color": "#555555"
-                },
-                {
-                  "type": "text",
-                  "text": "-1,200",
-                  "size": "sm",
-                  "color": "#111111",
-                  "align": "end"
-                }
-              ]
-            }
+            @foreach ($transactions as $transaction)
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "カテゴリ",
+                    "size": "sm",
+                    "color": "#555555",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "給料",
+                    "size": "sm",
+                    "color": "#111111",
+                    "align": "end"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "コメント",
+                    "size": "sm",
+                    "color": "#555555",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{ $transaction->description }}",
+                    "size": "sm",
+                    "color": "#111111",
+                    "align": "end"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "金額",
+                    "size": "sm",
+                    "color": "#555555",
+                    "flex": 0
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{ $transaction->amount }}",
+                    "size": "sm",
+                    "color": "#111111",
+                    "align": "end"
+                  }
+                ]
+              }
+              @if(!$loop->last)
+              ,
+              {
+                "type": "separator",
+                "margin": "md"
+              },
+              @endif
+            @endforeach
           ]
         },
         {

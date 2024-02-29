@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use LINE\Clients\MessagingApi\Model\ReplyMessageRequest;
@@ -93,8 +94,9 @@ class ChatGPTService
 
                 if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
                     $transactionArray = $jsonObj->transactions;
+                    $created = array();
                     foreach ($transactionArray as $transaction) {
-                        $created = $this->transactionService->createTransaction((array)$transaction);
+                        array_push($created, $this->transactionService->createTransaction((array)$transaction));
                     }
                     if (count($transactionArray) > 0) {
                         return $this->lineMessageService->createTransactionMessage($created);
@@ -126,7 +128,6 @@ class ChatGPTService
     public function test()
     {
         $res = $this->analyzeText(request('text'));
-        Log::debug($res->getContents());
-        dd($res, $res->getContents());
+        dd($res);
     }
 }

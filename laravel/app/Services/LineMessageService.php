@@ -51,8 +51,15 @@ class LineMessageService
         ]);
     }
 
-    public function createTransactionMessage($transaction): FlexMessage
+    public function createTransactionMessage($transactions): FlexMessage
     {
-        return new FlexMessage(json_decode(view('json/flexMessage')->render(), true));
+        // dd($transactions);
+        return new FlexMessage(
+            json_decode(
+                view('json/flexMessage')
+                    ->with(['transactions' => $transactions])
+                    ->render()
+            , true)
+        );
     }
 }
