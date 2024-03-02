@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\LineOAuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LiffController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -36,6 +37,7 @@ Route::get('/', function () {
     return redirect()->route(RouteServiceProvider::HOME);
 });
 
+
 // line OAuth 2.1
 Route::prefix('auth/line')
     ->controller(LineOAuthController::class)
@@ -56,6 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/liff', [LiffController::class, 'index'])->name('liff.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
