@@ -1,6 +1,6 @@
 {
   "type": "flex",
-  "altText": "This is a Flex Message",
+  "altText": "{{ count($transactions) }} 件の収支データを登録しました！",
   "contents": {
     "type": "bubble",
     "hero": {
@@ -131,7 +131,7 @@
           "action": {
             "type": "uri",
             "label": "収支一覧で確認する",
-            "uri": "{{ config('line.liff.transactions') }}"
+            "uri": "{{ config('line.liff.endpoint') . '/transactions' }}"
           }
         }
       ]
