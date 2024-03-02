@@ -15,6 +15,6 @@ return [
     ],
 
     'liff' => [
-        'transactions' => env('LIFF_URL_TRANSACTIONS', 'http://linecorp.com/')
+        'transactions' => env('LIFF_ENDPOINT', 'http://linecorp.com/')
     ]
 ];
