@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\LineOAuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LiffController;
 use App\Http\Controllers\TransactionController;
 use App\Models\User;
@@ -55,9 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/welcome', function () {
         return Inertia::render('Welcome');
     })->name('welcome');
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/liff', [LiffController::class, 'index'])->name('liff.index');
 

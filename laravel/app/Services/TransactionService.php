@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class TransactionService
@@ -75,5 +77,38 @@ class TransactionService
                 'category_id' => $data['categoryId'],
                 'description' => $data['description'],
             ]);
+    }
+
+    public function getMonthlyCategoryPercentages(String $yyyymm)
+    {
+        $startOfMonth = $this->ymToDate($yyyymm)->startOfMonth();
+        $endOfMonth = $this->ymToDate($yyyymm)->endOfMonth();
+
+        $categoryAmounts = Transaction::authed()
+            ->select('categories.name', DB::raw('SUM(transactions.amount) as total_amount'))
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+            ->whereNull('transactions.deleted_at')
+            ->groupBy('categories.name')
+            ->get();
+
+        $totalAmount = $categoryAmounts->sum('total_amount');
+
+        $categoryPercentages = array();
+        foreach ($categoryAmounts as $categoryAmount) {
+            $percentage = round(($categoryAmount->total_amount / $totalAmount) * 100);
+            array_push($categoryPercentages, [
+                'name' => $categoryAmount->name,
+                'value' => $percentage,
+                'label' => $categoryAmount->name . ':' . $percentage . '%'
+            ]);
+        }
+
+        return $categoryPercentages;
+    }
+
+    private function ymToDate(String $yyyymm)
+    {
+        return Carbon::createFromFormat('Ymd', $yyyymm . '01');
     }
 }

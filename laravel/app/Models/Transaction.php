@@ -44,7 +44,7 @@ class Transaction extends Model
 
     public function scopeAuthed(Builder $builder)
     {
-        $builder->where('user_id', Auth::id());
+        $builder->where('transactions.user_id', Auth::id());
     }
 
     // バリデーション

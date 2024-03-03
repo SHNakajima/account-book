@@ -35,7 +35,8 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "@heroicons/react": "^2.1.1"
+    "@heroicons/react": "^2.1.1",
+    "recharts": "^2.12.2"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix"
