@@ -79,11 +79,13 @@ class TransactionService
             ]);
     }
 
-    public function getMonthlyCategoryPercentages(String $yyyymm)
+    public function getMonthlyCategoryPercentages(string $yyyymm)
     {
-        $startOfMonth = $this->ymToDate($yyyymm)->startOfMonth();
-        $endOfMonth = $this->ymToDate($yyyymm)->endOfMonth();
+        // 年月から開始日と終了日を取得
+        $startOfMonth = Carbon::createFromFormat('Ymd', $yyyymm . '01')->startOfMonth();
+        $endOfMonth = Carbon::createFromFormat('Ymd', $yyyymm . '01')->endOfMonth();
 
+        // カテゴリごとの収支金額の合計を取得
         $categoryAmounts = Transaction::authed()
             ->select('categories.name', DB::raw('SUM(transactions.amount) as total_amount'))
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
@@ -92,23 +94,21 @@ class TransactionService
             ->groupBy('categories.name')
             ->get();
 
+        // 合計収支金額を計算
         $totalAmount = $categoryAmounts->sum('total_amount');
 
-        $categoryPercentages = array();
-        foreach ($categoryAmounts as $categoryAmount) {
+        // カテゴリごとのパーセンテージを計算し、配列に格納
+        $categoryPercentages = $categoryAmounts->map(function ($categoryAmount) use ($totalAmount) {
             $percentage = round(($categoryAmount->total_amount / $totalAmount) * 100);
-            array_push($categoryPercentages, [
+            return [
                 'name' => $categoryAmount->name,
                 'value' => $percentage,
                 'label' => $categoryAmount->name . ':' . $percentage . '%'
-            ]);
-        }
+            ];
+        })->filter(function ($categoryPercentage) {
+            return $categoryPercentage['value'] > 0;
+        });
 
-        return $categoryPercentages;
-    }
-
-    private function ymToDate(String $yyyymm)
-    {
-        return Carbon::createFromFormat('Ymd', $yyyymm . '01');
+        return $categoryPercentages->all();
     }
 }
