@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Services\TransactionService;
 
@@ -24,6 +25,7 @@ class DashboardController extends Controller
 
         $monthlyCategoryPercentages = $this->transactionService->getMonthlyCategoryPercentages($ym);
 
+        Log::debug(json_encode($monthlyCategoryPercentages));
         // dd($monthlyCategoryPercentages);
         return Inertia::render('Dashboard/index', [
             'monthlyCategoryPercentages' => $monthlyCategoryPercentages,

@@ -90,6 +90,7 @@ class TransactionService
             ->select('categories.name', DB::raw('SUM(transactions.amount) as total_amount'))
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+            ->where('categories.type', 'expense')
             ->whereNull('transactions.deleted_at')
             ->groupBy('categories.name')
             ->get();
