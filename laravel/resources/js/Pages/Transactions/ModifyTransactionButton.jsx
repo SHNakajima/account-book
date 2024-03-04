@@ -34,7 +34,6 @@ export default function ModifyTransactionButton({
   };
 
   const initForm = () => {
-    console.log('initForm');
     setData({
       id: target.id,
       description: target.description,
@@ -54,8 +53,6 @@ export default function ModifyTransactionButton({
   const deleteUser = e => {
     e.preventDefault();
 
-    console.log(data);
-
     patch(route(patchRouteName), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
@@ -72,12 +69,10 @@ export default function ModifyTransactionButton({
 
   const handleClick = e => {
     const t = e.target;
-    console.log(t.dataset.key);
     setData('categoryId', Number(t.dataset.key));
     setSelectedText(t.textContent);
 
     const selected = allCategories.filter(i => i.id == t.dataset.key)[0];
-    console.log(selected);
     setSelected(selected);
   };
 

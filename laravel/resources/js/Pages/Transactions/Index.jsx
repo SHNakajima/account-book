@@ -4,8 +4,6 @@ import TransactionsTable from './TransactionsTable';
 import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
 
 export default function List({ auth, transactions, allCategories, status }) {
-  console.log(transactions);
-  // console.log(allCategories);
   return (
     <AuthenticatedLayout
       user={auth.user}
