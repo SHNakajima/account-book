@@ -21,6 +21,8 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+        // dd($request->header('X-Inertia-Partial-Data'), $request->all());
+
         $ym = $request->get('ym', Carbon::now()->format('Ym'));
 
         $monthlyCategoryPercentages = $this->transactionService->getMonthlyCategoryPercentages($ym);

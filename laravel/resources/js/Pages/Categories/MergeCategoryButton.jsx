@@ -31,8 +31,6 @@ export default function MergeCategoryButton({
   const deleteUser = e => {
     e.preventDefault();
 
-    console.log(data);
-
     patch(route(patchRouteName), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
@@ -50,7 +48,6 @@ export default function MergeCategoryButton({
 
   const handleClick = e => {
     const t = e.target;
-    console.log(t.dataset.key);
     setData('targetId', Number(t.dataset.key));
     setSelectedText(t.textContent);
   };

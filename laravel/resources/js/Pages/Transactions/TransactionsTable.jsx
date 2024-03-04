@@ -3,8 +3,6 @@ import DeleteTransactionButton from './DeleteTransactionButton';
 import ModifyTransactionButton from './ModifyTransactionButton';
 
 export default function TransactionsTable({ transactions, allCategories }) {
-  console.log(transactions);
-
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
