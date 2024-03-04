@@ -108,8 +108,8 @@ class TransactionService
             ];
         })->filter(function ($categoryPercentage) {
             return $categoryPercentage['value'] > 0;
-        });
+        })->sortBy('value');
 
-        return $categoryPercentages->all();
+        return $categoryPercentages->values()->all();
     }
 }
