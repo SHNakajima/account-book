@@ -2,6 +2,7 @@ import DoughnutsGraph from '@/Pages/Dashboard/DoughnutsGraph';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import MonthSelector from './MonthSelector';
+import MonthlyFinanceChart from './MonthlyFinanceChart';
 
 export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
   const year = parseInt(ym.slice(0, 4));
@@ -27,6 +28,14 @@ export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6">
+              <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                収支推移
+              </h2>
+              <div>
+                <MonthlyFinanceChart data={null} />
+              </div>
+            </div>
+            <div className="p-3">
               <MonthSelector
                 currentMonth={month}
                 currentYear={year}
