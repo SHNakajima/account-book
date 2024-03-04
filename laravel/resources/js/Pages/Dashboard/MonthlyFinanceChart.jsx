@@ -13,16 +13,17 @@ import { Text } from 'recharts';
 
 export default function MonthlyBalanceChart({ data }) {
   data = [
-    { display_ym: '2023/10月', income: 0, expense: 0 },
+    { year: '2023年', display_ym: '10月', income: 0, expense: 0 },
     { display_ym: '11月', income: 0, expense: 0 },
     { display_ym: '12月', income: 300000, expense: -200000 },
-    { display_ym: '2024/1月', income: 320000, expense: -410000 },
+    { year: '2024年', display_ym: '1月', income: 320000, expense: -410000 },
     { display_ym: '2月', income: 310000, expense: -220000 },
     { display_ym: '3月', income: 330000, expense: -400000 },
   ];
   // 収支の推移データを作成
   const balanceData = data.map(item => ({
-    年月: item.display_ym,
+    年: item.year ?? '',
+    月: item.display_ym,
     収入: item.income,
     支出: item.expense,
     収支: item.income + item.expense,
@@ -31,25 +32,15 @@ export default function MonthlyBalanceChart({ data }) {
   function CustomizedTick(props) {
     const { x, y, stroke, payload } = props;
 
-    const offset = 0;
-
-    const splited = payload.value.split('/');
-    let line1val, line2val;
-    if (splited.length > 1) {
-      line2val = splited[0];
-      line1val = splited[1];
-    } else if (splited.length == 1) {
-      line1val = splited[0];
-    }
+    const offsetX = 8;
+    const offsetY = -10;
     return (
       <Text
-        x={x}
-        y={y + offset}
-        style={{ fontSize: '12px' }}
-        fill="#000000"
+        x={x + offsetX}
+        y={y + offsetY}
         textAnchor="middle"
-        width="50"
         verticalAnchor="start"
+        style={{ fontSize: '14px' }}
       >
         {payload.value}
       </Text>
@@ -64,13 +55,15 @@ export default function MonthlyBalanceChart({ data }) {
         stackOffset="sign"
       >
         <CartesianGrid stroke="#f5f5f5" />
+        <XAxis dataKey="月" fontSize="14" />
         <XAxis
-          dataKey="年月"
-          height={50}
-          width={30}
+          dataKey="年"
+          axisLine={false}
+          tickLine={false}
+          xAxisId="quarter"
           tick={<CustomizedTick />}
         />
-        <YAxis font-size="12" />
+        <YAxis fontSize="14" />
         <Tooltip />
         <Legend />
         <Bar dataKey="収入" stackId="a" fill="#8884d8" />
