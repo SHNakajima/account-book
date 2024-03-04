@@ -3,7 +3,6 @@ import MergeCategoryButton from './MergeCategoryButton';
 
 // カテゴリテーブルコンポーネント
 export default function CategoriesTable({ categories }) {
-
   return (
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50 divide-y">

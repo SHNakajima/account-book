@@ -19,9 +19,15 @@ const MonthSelector = ({ currentYear, currentMonth, handleChageYm }) => {
 
   return (
     <div className="flex justify-between items-center">
-        <ChevronLeftIcon className="h-6 w-6 cursor-pointer" onClick={goToPreviousMonth} />
-        <h2 className="text-xl font-semibold">{`${currentYear}年${currentMonth}月`}</h2>
-        <ChevronRightIcon className="h-6 w-6 cursor-pointer" onClick={goToNextMonth} />
+      <ChevronLeftIcon
+        className="h-6 w-6 cursor-pointer"
+        onClick={goToPreviousMonth}
+      />
+      <h2 className="text-xl font-semibold">{`${currentYear}年${currentMonth}月`}</h2>
+      <ChevronRightIcon
+        className="h-6 w-6 cursor-pointer"
+        onClick={goToNextMonth}
+      />
     </div>
   );
 };

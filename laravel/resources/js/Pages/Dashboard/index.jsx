@@ -7,7 +7,10 @@ export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
   const year = parseInt(ym.slice(0, 4));
   const month = parseInt(ym.slice(4, 6));
 
-  const handleChageYm = (ym) => router.visit(route('dashboard', { ym: ym }), { only: ['monthlyCategoryPercentages', 'ym'] });
+  const handleChageYm = ym =>
+    router.visit(route('dashboard', { ym: ym }), {
+      only: ['monthlyCategoryPercentages', 'ym'],
+    });
 
   return (
     <AuthenticatedLayout
@@ -24,7 +27,11 @@ export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div className="p-6">
-              <MonthSelector currentMonth={month} currentYear={year} handleChageYm={handleChageYm} />
+              <MonthSelector
+                currentMonth={month}
+                currentYear={year}
+                handleChageYm={handleChageYm}
+              />
             </div>
             <div className="p-6">
               <h2 className="font-semibold text-xl text-gray-800 leading-tight">
