@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { Link } from '@inertiajs/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
-const MonthSelector = ({ currentYear, currentMonth, handleChageYm }) => {
+export default function MonthSelector({
+  currentYear,
+  currentMonth,
+  handleChageYm,
+}) {
   const goToPreviousMonth = () => {
     const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
     const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
@@ -30,6 +34,4 @@ const MonthSelector = ({ currentYear, currentMonth, handleChageYm }) => {
       />
     </div>
   );
-};
-
-export default MonthSelector;
+}
