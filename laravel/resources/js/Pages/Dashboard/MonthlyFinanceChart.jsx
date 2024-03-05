@@ -12,14 +12,6 @@ import {
 import { Text } from 'recharts';
 
 export default function MonthlyBalanceChart({ data }) {
-  data = [
-    { year: '2023年', display_ym: '10月', income: 0, expense: 0 },
-    { display_ym: '11月', income: 0, expense: 0 },
-    { display_ym: '12月', income: 300000, expense: -200000 },
-    { year: '2024年', display_ym: '1月', income: 320000, expense: -410000 },
-    { display_ym: '2月', income: 310000, expense: -220000 },
-    { display_ym: '3月', income: 330000, expense: -400000 },
-  ];
   // 収支の推移データを作成
   const balanceData = data.map(item => ({
     年: item.year ?? '',
