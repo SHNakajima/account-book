@@ -138,7 +138,6 @@ class TransactionService
             $startOfMonth->addMonth();
         }
 
-
         // 最初の１回だけ年を表示
         $addedYears = array();
 
@@ -155,8 +154,6 @@ class TransactionService
             // 収入と支出の金額を計算
             $income = $filteredTransactions->where('amount', '>', 0)->sum('amount');
             $expense = $filteredTransactions->where('amount', '<', 0)->sum('amount');
-
-
 
             $yearStr = '';
             if (!array_key_exists($year, $addedYears)) {

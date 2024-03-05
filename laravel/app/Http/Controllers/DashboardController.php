@@ -29,10 +29,6 @@ class DashboardController extends Controller
 
         $latestSummary = $this->transactionService->getRecentMonthlyIncomeExpense($ym);
 
-        // dd($latestSummary);
-
-        Log::debug(json_encode($monthlyCategoryPercentages));
-        // dd($monthlyCategoryPercentages);
         return Inertia::render('Dashboard/index', [
             'monthlyCategoryPercentages' => $monthlyCategoryPercentages,
             'latestSummary' => $latestSummary,
