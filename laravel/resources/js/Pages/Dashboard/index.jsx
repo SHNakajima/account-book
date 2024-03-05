@@ -4,13 +4,19 @@ import { Head, router } from '@inertiajs/react';
 import MonthSelector from './MonthSelector';
 import MonthlyFinanceChart from './MonthlyFinanceChart';
 
-export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
+export default function Dashboard({
+  auth,
+  monthlyCategoryPercentages,
+  latestSummary,
+  ym,
+}) {
   const year = parseInt(ym.slice(0, 4));
   const month = parseInt(ym.slice(4, 6));
 
   const handleChageYm = ym =>
     router.visit(route('dashboard', { ym: ym }), {
-      only: ['monthlyCategoryPercentages', 'ym'],
+      only: ['monthlyCategoryPercentages', 'latestSummary', 'ym'],
+      preserveScroll: true,
     });
 
   return (
@@ -32,7 +38,7 @@ export default function Dashboard({ auth, monthlyCategoryPercentages, ym }) {
                 収支推移
               </h2>
               <div>
-                <MonthlyFinanceChart data={null} />
+                <MonthlyFinanceChart data={latestSummary} />
               </div>
             </div>
             <div className="p-3">

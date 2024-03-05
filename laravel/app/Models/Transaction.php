@@ -30,6 +30,17 @@ class Transaction extends Model
         );
     }
 
+    protected function amountSigned(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $type = $this->category->type;
+                $amount = $attributes['amount'];
+                return ($type == 'income') ? $amount :  $amount * -1;
+            }
+        );
+    }
+
     protected function createdAtYmd(): Attribute
     {
         return Attribute::make(
