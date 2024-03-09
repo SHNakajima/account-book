@@ -58,9 +58,9 @@ export default function MonthlyBalanceChart({ data }) {
         <YAxis fontSize="14" />
         <Tooltip />
         <Legend />
-        <Bar dataKey="収入" stackId="a" fill="#8884d8" />
-        <Bar dataKey="支出" stackId="a" fill="#82ca9d" />
-        <Line type="monotone" dataKey="収支" stroke="#ff7300" />
+        <Bar dataKey="収入" stackId="a" fill="#3730A3" />
+        <Bar dataKey="支出" stackId="a" fill="#DC2626" />
+        <Line type="monotone" dataKey="収支" stroke="#10B981" />
       </ComposedChart>
     </ResponsiveContainer>
   );
