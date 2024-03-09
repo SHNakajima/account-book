@@ -14,12 +14,13 @@ use Illuminate\Validation\ValidationException;
 class CategoryService
 {
     /**
-     * Create a new category.
+     * 新しいカテゴリを作成します。
      *
-     * @param $validated
-     * @throws ValidationException
+     * @param array $validated 検証済みのデータ
+     * @return void
+     * @throws ValidationException 検証例外が発生した場合
      */
-    public function createCategory($validated)
+    public function createCategory($validated): void
     {
         Log::debug("createCategory");
 
@@ -31,12 +32,13 @@ class CategoryService
     }
 
     /**
-     * Create a new category.
+     * カテゴリを削除します。
      *
-     * @param $validated
-     * @throws ValidationException
+     * @param array $validated 検証済みのデータ
+     * @return void
+     * @throws ValidationException 検証例外が発生した場合
      */
-    public function deleteCategory($validated)
+    public function deleteCategory($validated): void
     {
         Log::debug("deleteCategory");
 
@@ -46,7 +48,13 @@ class CategoryService
         ])->first()->delete();
     }
 
-    public function initCategories($validated)
+    /**
+     * 初期カテゴリを作成します。
+     *
+     * @param array $validated 検証済みのデータ
+     * @return void
+     */
+    public function initCategories($validated): void
     {
 
         $categories = [

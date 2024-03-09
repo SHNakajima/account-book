@@ -23,12 +23,22 @@ class LineOAuthService
         $this->callback_url = Config('line.login.callback_url');
     }
 
-    public function getOauthUri()
+    /**
+     * LINE OAuth認証のURIを取得します。
+     *
+     * @return string LINE OAuth認証のURI
+     */
+    public function getOauthUri(): string
     {
         return $this::LINE_OAUTH_URI;
     }
 
-    public function getRedirectUrl()
+    /**
+     * リダイレクトURLを取得します。
+     *
+     * @return string リダイレクトURL
+     */
+    public function getRedirectUrl(): string
     {
         $csrf_token = Str::random(32);
         $query_data = [
@@ -42,6 +52,12 @@ class LineOAuthService
         return self::LINE_OAUTH_URI . $query_str;
     }
 
+    /**
+     * ユーザー情報を取得します。
+     *
+     * @param string $access_token アクセストークン
+     * @return mixed ユーザー情報
+     */
     public function fetchUserInfo($access_token)
     {
         $base_uri = ['base_uri' => self::LINE_PROFILE_API_URI];
@@ -57,6 +73,12 @@ class LineOAuthService
         return $user_info;
     }
 
+    /**
+     * トークン情報を取得します。
+     *
+     * @param string $code コード
+     * @return mixed トークン情報
+     */
     public function fetchTokenInfo($code)
     {
         $base_uri = ['base_uri' => self::LINE_TOKEN_API_URI];
@@ -82,6 +104,16 @@ class LineOAuthService
         return $token_info;
     }
 
+    /**
+     * リクエストを送信します。
+     *
+     * @param array $base_uri ベースURI
+     * @param string $method メソッド
+     * @param string $path パス
+     * @param array $headers ヘッダー
+     * @param array|null $form_params フォームパラメータ
+     * @return mixed レスポンス
+     */
     private function sendRequest($base_uri, $method, $path, $headers, $form_params = null)
     {
         try {

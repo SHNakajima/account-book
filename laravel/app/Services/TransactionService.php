@@ -16,11 +16,11 @@ class TransactionService
     /**
      * Create a new transaction.
      *
-     * @param $transaction
-     * @return Transaction
-     * @throws ValidationException
+     * @param array $transaction トランザクションのデータ
+     * @return Transaction 作成されたトランザクションのインスタンス
+     * @throws ValidationException バリデーションエラーが発生した場合
      */
-    public function createTransaction($transaction): Transaction
+    public function createTransaction(array $transaction): Transaction
     {
         Log::debug("createTransaction");
         Log::debug(json_encode($transaction));
@@ -53,7 +53,14 @@ class TransactionService
         return $createdTransaction;
     }
 
-    public function mergeCategory($beforeId, $afterId)
+    /**
+     * 指定されたカテゴリIDのトランザクションを別のカテゴリIDにマージします。
+     *
+     * @param int $beforeId マージ元のカテゴリID
+     * @param int $afterId マージ先のカテゴリID
+     * @return int 影響を受けたトランザクションの数
+     */
+    public function mergeCategory(int $beforeId, int $afterId): int
     {
         // dd($beforeId, $afterId);
         return Transaction::authed()
@@ -61,14 +68,26 @@ class TransactionService
             ->update(['category_id' => $afterId]);
     }
 
-    public function deleteTransactionById($transactionId)
+    /**
+     * 指定されたIDのトランザクションを削除します。
+     *
+     * @param int $transactionId 削除するトランザクションのID
+     * @return void
+     */
+    public function deleteTransactionById(int $transactionId): void
     {
         Transaction::authed()
             ->find($transactionId)
             ->delete();
     }
 
-    public function updateTransaction($data)
+    /**
+     * トランザクションを更新します。
+     *
+     * @param array $data 更新するトランザクションのデータ
+     * @return int 影響を受けたトランザクションの数
+     */
+    public function updateTransaction(array $data): int
     {
         return Transaction::authed()
             ->find($data['id'])
@@ -79,7 +98,13 @@ class TransactionService
             ]);
     }
 
-    public function getMonthlyCategoryPercentages(string $yyyymm)
+    /**
+     * 指定された年月のカテゴリ別支出の割合を取得します。
+     *
+     * @param string $yyyymm 年月（YYYYMM形式）
+     * @return array カテゴリ別の支出割合
+     */
+    public function getMonthlyCategoryPercentages(string $yyyymm): array
     {
         // 年月から開始日と終了日を取得
         $startOfMonth = Carbon::createFromFormat('Ymd', $yyyymm . '01')->startOfMonth();
@@ -113,7 +138,13 @@ class TransactionService
         return $categoryPercentages->values()->all();
     }
 
-    public function getRecentMonthlyIncomeExpense(string $yyyymm)
+    /**
+     * 指定された年月から過去6カ月間の収入と支出の概要を取得します。
+     *
+     * @param string $yyyymm 年月（YYYYMM形式）
+     * @return array 収入と支出の概要
+     */
+    public function getRecentMonthlyIncomeExpense(string $yyyymm): array
     {
         $results = [];
 

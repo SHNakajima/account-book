@@ -10,12 +10,21 @@ use LINE\Clients\MessagingApi\Model\ReplyMessageRequest;
 use LINE\Clients\MessagingApi\Model\FlexMessage;
 use OpenAI;
 
+/**
+ * ChatGPTを利用したテキスト解析に関するビジネスロジックを提供するサービスクラス。
+ */
 class ChatGPTService
 {
     private $client;
     private $transactionService;
     private $lineMessageService;
 
+    /**
+     * コンストラクタ
+     *
+     * @param TransactionService $transactionService トランザクションサービスのインスタンス
+     * @param LineMessageService $lineMessageService LINEメッセージサービスのインスタンス
+     */
     public function __construct(TransactionService $transactionService, LineMessageService $lineMessageService)
     {
         $yourApiKey = getenv('OPENAI_API_KEY');
@@ -24,12 +33,24 @@ class ChatGPTService
         $this->lineMessageService = $lineMessageService;
     }
 
+    /**
+     * テキストを解析し、結果を返します。
+     *
+     * @param string $text 解析するテキスト
+     * @return string|FlexMessage 解析結果
+     */
     public function analyzeText($text): string|FlexMessage
     {
         // TODO:チャットボットの機能追加
         return $this->handleCreateTransactionMessage($text);
     }
 
+    /**
+     * テキストからトランザクションを作成し、結果を返します。
+     *
+     * @param string $text 解析するテキスト
+     * @return string|FlexMessage トランザクション作成結果
+     */
     public function handleCreateTransactionMessage($text): string|FlexMessage
     {
         $userCategories = Auth::user()->categories;
@@ -101,7 +122,6 @@ class ChatGPTService
                     if (count($transactionArray) > 0) {
                         return $this->lineMessageService->createTransactionMessage($created);
                     }
-
                 } else {
                     return "すいません、AIの気分で登録できませんでした。少し文言を変えて登録しなおしてください。。";
                 }
@@ -114,17 +134,27 @@ class ChatGPTService
         return "エラーです。";
     }
 
+    /**
+     * 利用可能なモデルのリストを取得します。
+     *
+     * @return void
+     */
     public function getModels()
     {
-        // Model	Input	Output
-        // gpt-4-0125-preview	$0.01 / 1K tokens	$0.03 / 1K tokens
-        // gpt-3.5-turbo-1106	$0.0010 / 1K tokens	$0.0020 / 1K tokens
+        // Model    Input    Output
+        // gpt-4-0125-preview    $0.01 / 1K tokens    $0.03 / 1K tokens
+        // gpt-3.5-turbo-1106    $0.0010 / 1K tokens    $0.0020 / 1K tokens
 
         $response = $this->client->models()->list();
 
         dd($response->toArray()); // ['object' => 'list', 'data' => [...]]
     }
 
+    /**
+     * テスト関数
+     *
+     * @return void
+     */
     public function test()
     {
         $res = $this->analyzeText(request('text'));
