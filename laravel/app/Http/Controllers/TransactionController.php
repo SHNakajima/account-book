@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\User;
@@ -59,17 +60,9 @@ class TransactionController extends Controller
         return redirect()->route('transactions.index');
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(UpdateTransactionRequest $request): RedirectResponse // Changed this line
     {
-        // {"id":2,"description":"ボーナスでの臨時収入です","categoryId":2,"amount":1557}
-        // dd($request, implode(',', Auth::user()->categories->pluck('id')->toArray()));
-        $validated = $request->validate([
-            'id' => 'required|numeric|exists:transactions',
-            'amount' => 'required|numeric|min:0', // 0以上の数値
-            'categoryId' => 'required|in:' . implode(',', Auth::user()->categories->pluck('id')->toArray()), // ユーザーが所有するカテゴリの中に存在するか
-            'description' => 'required|string|max:255', // 文字列で255文字以内
-        ]);
-
+        $validated = $request->validated(); // Changed this line
         $this->transactionService->updateTransaction($validated);
 
         return redirect()->route('transactions.index');
