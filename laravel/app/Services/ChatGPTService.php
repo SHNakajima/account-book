@@ -41,7 +41,6 @@ class ChatGPTService
      */
     public function analyzeText($text): string|FlexMessage
     {
-        // TODO:チャットボットの機能追加
         return $this->handleCreateTransactionMessage($text);
     }
 
@@ -54,18 +53,32 @@ class ChatGPTService
     public function handleCreateTransactionMessage($text): string|FlexMessage
     {
         $userCategories = Auth::user()->categories;
-        if ($userCategories->count() == 0) {
+        if ($userCategories->isEmpty()) {
             return "カテゴリーがまだ登録されていないようです。。URLから登録をお願いします！ \n" . route('categories.index');
         }
+
         $categoryListStr = $userCategories->pluck('name')->implode(',');
-        // dd($categoryListStr);
-        // TODO: プロンプトのテンプレート化
-        $response = $this->client->chat()->create([
+        $prompt = $this->generatePrompt($text, $categoryListStr);
+        $response = $this->client->chat()->create($prompt);
+
+        return $this->processResponse($response);
+    }
+
+    /**
+     * プロンプトを生成します。
+     *
+     * @param string $text
+     * @param string $categoryListStr
+     * @return array
+     */
+    private function generatePrompt($text, $categoryListStr): array
+    {
+        return [
             'model' => 'gpt-3.5-turbo-0613',
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => 'inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください。inputに金額が含まれない場合は空の配列を返してください。 \n # input \n ' . $text . ' \n # categoryList \n ' . $categoryListStr,
+                    'content' => "inputを適切な数の家計簿のtransactionデータに分解し、Jsonに変換してください。カテゴリはcategoryListから適切に選択してください。inputに金額が含まれない場合は空の配列を返してください。 \n # input \n $text \n # categoryList \n $categoryListStr",
                 ],
             ],
             'functions' => [
@@ -104,20 +117,27 @@ class ChatGPTService
                     ],
                 ],
             ],
-        ]);
+        ];
+    }
 
-        $jsonObj = null;
-        foreach ($response->choices as $key => $choice) {
+    /**
+     * OpenAIの応答を処理します。
+     *
+     * @param $response
+     * @return string|FlexMessage
+     */
+    private function processResponse($response): string|FlexMessage
+    {
+        foreach ($response->choices as $choice) {
             try {
-                // Log::debug($choice->message->functionCall->arguments);
                 $responseJson = $choice->message->functionCall->arguments;
                 $jsonObj = json_decode($responseJson);
 
-                if (json_last_error() === JSON_ERROR_NONE && $jsonObj->transactions !== null) {
+                if (json_last_error() === JSON_ERROR_NONE && !empty($jsonObj->transactions)) {
                     $transactionArray = $jsonObj->transactions;
-                    $created = array();
+                    $created = [];
                     foreach ($transactionArray as $transaction) {
-                        array_push($created, $this->transactionService->createTransaction((array)$transaction));
+                        $created[] = $this->transactionService->createTransaction((array)$transaction);
                     }
                     if (count($transactionArray) > 0) {
                         return $this->lineMessageService->createTransactionMessage($created);
@@ -126,7 +146,6 @@ class ChatGPTService
                     return "すいません、AIの気分で登録できませんでした。少し文言を変えて登録しなおしてください。。";
                 }
             } catch (\Throwable $th) {
-                dump($th);
                 return $th->getMessage();
             }
         }
