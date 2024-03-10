@@ -1,9 +1,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import TransactionsTable from './TransactionsTable';
-import { PlusIcon } from '@heroicons/react/24/outline'; // プラスアイコンを追加
+import AddTransactionButton from './AddTransactionButton';
+import useLiff from '@/hooks/useLiff';
+import { useState, useEffect } from 'react';
 
 export default function List({ auth, transactions, allCategories, status }) {
+  const [displayAddButton, setDisplayAddButton] = useState(false);
+  // 修正
+  const liff = useLiff();
+
+  useEffect(() => {
+    console.log(liff);
+    setDisplayAddButton(liff.ready);
+  }, [liff]); // 依存する値がない場合は空の配列を渡す
+
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -20,12 +31,7 @@ export default function List({ auth, transactions, allCategories, status }) {
           <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <div className="flex justify-between items-center mb-4">
               <h3 className="font-semibold text-lg text-gray-800">収支</h3>
-              <button
-                onClick={e => alert('開発中です！少々お待ちください')}
-                className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
-              >
-                <PlusIcon className="h-6 w-4" />
-              </button>
+              {displayAddButton && <AddTransactionButton liff={liff} />}
             </div>
             <div className="ml-4">
               <TransactionsTable
