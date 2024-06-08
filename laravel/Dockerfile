@@ -6,7 +6,6 @@ WORKDIR /var/www
 
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y \
-  nginx \
   git \
   curl \
   zip \
@@ -18,7 +17,7 @@ RUN apt-get update && apt-get install -y \
   libxml2-dev \
   nodejs \
   npm \
-  && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+  && docker-php-ext-install mbstring exif pcntl bcmath gd
 
 # Composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -33,23 +32,16 @@ RUN composer install
 RUN npm install
 RUN npm run build
 
-# Nginxの設定ファイルをコピー
-COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf
-
 # start-containerスクリプトをコピー
 COPY ./docker/scripts/start-container.sh /usr/local/bin/start-container
 
 # スクリプトに実行権限を付与
 RUN chmod +x /usr/local/bin/start-container
 
-# 権限をwww-dataに変更
-RUN chown -R www-data:www-data /var/www
-
 # LiteStreamのインストール
 ADD https://github.com/benbjohnson/litestream/releases/download/v0.3.8/litestream-v0.3.8-linux-amd64-static.tar.gz /tmp/litestream.tar.gz
 RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 COPY ./docker/etc/litestream.yml /etc/litestream.yml
-
 
 # ポート8080を公開
 EXPOSE 8080
