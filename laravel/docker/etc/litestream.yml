@@ -1,0 +1,4 @@
+dbs:
+  - path: ./database/database.sqlite
+    replicas:
+      - url: gcs://litestream_account_book_20240608/replicas
