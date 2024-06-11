@@ -15,11 +15,21 @@ litestream restore -if-replica-exists -config /etc/litestream.yml $DB_PATH
 if [ -f $DB_PATH ]; then
   # リストアに成功したら、リネームしていたファイルを削除
   echo "---- Restored from Cloud Storage ----"
-  rm $BACKUP_PATH
+  if [ -f $BACKUP_PATH ]; then
+    rm $BACKUP_PATH
+  fi
 else
   # 初回起動時にはレプリカが未作成であり、リストアに失敗するので、その場合には、冒頭でリネームしたdbファイルを元の名前に戻す
   echo "---- Failed to restore from Cloud Storage.  using exist database ----"
-  mv $BACKUP_PATH $DB_PATH
+  if [ -f $BACKUP_PATH ]; then
+    mv $BACKUP_PATH $DB_PATH
+  fi
+fi
+
+# レプリケーションに失敗して、かつデータベースファイルがない場合、マイグレーションを実行
+if [ ! -f $DB_PATH ]; then
+  echo "---- Database file not found. Running migrations... ----"
+  php artisan migrate --force
 fi
 
 # メインプロセスに、litestreamによるレプリケーション、
