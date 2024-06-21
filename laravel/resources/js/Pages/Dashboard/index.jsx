@@ -34,7 +34,7 @@ export default function Dashboard({
         </h2>
       }
     >
-      <Head title="Dashboard" />
+      <Head title="ダッシュボード" />
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
