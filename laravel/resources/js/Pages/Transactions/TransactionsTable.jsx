@@ -1,69 +1,94 @@
+import React from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import DeleteTransactionButton from './DeleteTransactionButton';
 import ModifyTransactionButton from './ModifyTransactionButton';
+import EmptyState from './EmptyState';
 
-export default function TransactionsTable({ transactions, allCategories }) {
+const groupTransactionsByDate = transactions => {
+  const grouped = {};
+  transactions.forEach(transaction => {
+    if (!grouped[transaction.created_at_ymd]) {
+      grouped[transaction.created_at_ymd] = [];
+    }
+    grouped[transaction.created_at_ymd].push(transaction);
+  });
+  return Object.entries(grouped).sort(([a], [b]) => new Date(b) - new Date(a));
+};
+
+const TransactionCard = ({ transaction, allCategories }) => (
+  <div className="bg-white shadow rounded-lg overflow-hidden">
+    <div className="px-4 py-3 flex items-center justify-between">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between">
+          <span
+            className={`text-lg font-semibold truncate ${
+              transaction.category.type === 'income'
+                ? 'text-green-600'
+                : 'text-red-600'
+            }`}
+          >
+            {transaction.amount_str}
+          </span>
+          <span className="ml-2 text-sm font-medium text-gray-900 truncate">
+            {transaction.category.display_name}
+          </span>
+        </div>
+        <p className="mt-1 text-sm text-gray-500 truncate">
+          {transaction.description}
+        </p>
+      </div>
+      <div className="ml-4 flex-shrink-0 flex items-center space-x-4">
+        <ModifyTransactionButton
+          patchRouteName="transactions.update"
+          target={transaction}
+          targetModelName="カテゴリ"
+          allCategories={allCategories}
+        >
+          <PencilIcon
+            className="h-5 w-5 text-gray-400 hover:text-gray-500"
+            aria-hidden="true"
+          />
+        </ModifyTransactionButton>
+        <DeleteTransactionButton
+          deletionRouteName="transactions.destroy"
+          target={transaction}
+          targetModelName="収支データ"
+        >
+          <TrashIcon
+            className="h-5 w-5 text-gray-400 hover:text-gray-500"
+            aria-hidden="true"
+          />
+        </DeleteTransactionButton>
+      </div>
+    </div>
+  </div>
+);
+
+export default function TransactionsList({ transactions, allCategories }) {
+  const groupedTransactions = groupTransactionsByDate(transactions);
+
+  if (transactions.length === 0) {
+    return <EmptyState />;
+  }
+
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              金額
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              カテゴリ名
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              詳細
-            </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              日付
-            </th>
-            <th className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              編集
-            </th>
-            <th className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              削除
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {transactions.map(transaction => (
-            <tr key={transaction.id}>
-              <td
-                className={`px-4 py-4 whitespace-nowrap ${transaction.category.type === 'income' ? 'text-blue-500' : 'text-red-500'}`}
-              >
-                {transaction.amount_str}
-              </td>
-              <td className="px-4 py-4 whitespace-nowrap">
-                {transaction.category.display_name}
-              </td>
-              <td className="px-4 py-4 whitespace-nowrap sm:whitespace-normal">
-                {transaction.description}
-              </td>
-              <td className="px-4 py-4 whitespace-nowrap sm:whitespace-normal">
-                {transaction.created_at_ymd}
-              </td>
-              <td className="px-2 py-4 whitespace-nowrap text-center">
-                <ModifyTransactionButton
-                  patchRouteName="transactions.update"
-                  target={transaction}
-                  targetModelName="カテゴリ"
-                  allCategories={allCategories}
-                />
-              </td>
-              <td className="px-2 py-4 whitespace-nowrap text-center">
-                <DeleteTransactionButton
-                  deletionRouteName="transactions.destroy"
-                  target={transaction}
-                  targetModelName="収支データ"
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-6">
+      {groupedTransactions.map(([date, dateTransactions]) => (
+        <div key={date} className="relative">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3 sticky top-0 bg-white z-10 py-2 shadow-sm">
+            {date}
+          </h2>
+          <div className="grid grid-cols-1 gap-3">
+            {dateTransactions.map(transaction => (
+              <TransactionCard
+                key={transaction.id}
+                transaction={transaction}
+                allCategories={allCategories}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
