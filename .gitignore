@@ -1,2 +1,3 @@
 laravel/.php-cs-fixer.cache
 laravel/env/phpenv
+.DS_Store
