@@ -46,8 +46,7 @@ class LineOAuthController extends Controller
         // アクセストークンの保存・更新
         $token = LineOAuthToken::where('line_user_id', $user_info->userId)->first();
         if ($token === null) {
-
-            // ログインチェック
+            // 新規登録
             $user = User::create([
                 'name' => $user_info->displayName,
                 'picture_url' => $user_info->pictureUrl
@@ -67,13 +66,28 @@ class LineOAuthController extends Controller
                 ]
             );
         } else {
-            // トークンの期限が切れていたら更新
-            // ログイン
             $user = $token->user;
+            // トークンの期限が切れていたら更新
+            if ($token->expires_at < Carbon::now()) {
+                $token->update([
+                    'access_token' => $token_info->access_token,
+                    'token_type' => $token_info->token_type,
+                    'refresh_token' => $token_info->refresh_token,
+                    'expires_at' => Carbon::now()->addSeconds($token_info->expires_in),
+                    'scope' => $token_info->scope,
+                    'id_token' => $token_info->id_token
+                ]);
+            }
+
+            // $user_info->pictureUrlに変更があれば更新
+            if ($user->picture_url !== $user_info->pictureUrl) {
+                $user->update(['picture_url' => $user_info->pictureUrl]);
+            }
         }
 
         $redirectRoute = $user->hasCategory() ? 'dashboard' : 'welcome';
 
+        // ログイン
         Auth::guard('web')->login($user, true);
         return redirect()->route($redirectRoute);
     }
