@@ -32,7 +32,7 @@ export default function List({ auth, transactions, allCategories, status }) {
             <div className="flex justify-between items-center mb-4">
               {displayAddButton && <AddTransactionButton liff={liff} />}
             </div>
-            <div className="ml-4">
+            <div>
               <TransactionsTable
                 transactions={transactions}
                 allCategories={allCategories}

@@ -75,10 +75,10 @@ export default function TransactionsList({ transactions, allCategories }) {
     <div className="space-y-6">
       {groupedTransactions.map(([date, dateTransactions]) => (
         <div key={date} className="relative">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 sticky top-0 bg-white z-10 py-2 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-900 mb-3 sticky top-0 bg-white z-10 py-2">
             {date}
           </h2>
-          <div className="grid grid-cols-1 gap-3">
+          <div className="ml-2 grid grid-cols-1 gap-3">
             {dateTransactions.map(transaction => (
               <TransactionCard
                 key={transaction.id}
