@@ -1,3 +1,4 @@
+# AI家計簿
 
 <p align="center">
   <img src="./laravel/public/images/icon/app_icon.png" alt="AI家計簿アイコン" width="200" height="200">
@@ -20,16 +21,14 @@ AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発�
 
 ## 2. 🤖 AIアシスタント・チャットボット
 
-![LINEmessagingAPIでの収支データ追加](./note/img/LINEmessagingAPIでの収支データ追加.png)
-
 - LINEで瞬時に収支記録
 - AI支出パターン分析（Coming Soon!）
 - 家計改善提案（Coming Soon!）
 - Q&A（Coming Soon!）
 
-## 3. 📊 ダッシュボード
+<img src="./note/img/LINEmessagingAPIでの収支データ追加.png" alt="LINEmessagingAPIでの収支データ追加" width="400">
 
-![ダッシュボード](./note/img/ダッシュボード.png)
+## 3. 📊 ダッシュボード
 
 月単位での収支データのサマリを表示します。
 
@@ -37,17 +36,21 @@ AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発�
 - 収支サマリー
 - 支出内訳円グラフ
 
-## 4. 💳 収支管理
+<img src="./note/img/ダッシュボード.png" alt="ダッシュボード" width="400">
 
-![収支一覧](./note/img/収支一覧.png)
+## 4. 💳 収支管理
 
 - 簡単な編集・削除機能
 
+<img src="./note/img/収支一覧.png" alt="収支一覧" width="400">
+
+
 ## 5. 🏷️ カテゴリ設定
 
-![カテゴリ一覧](./note/img/カテゴリ一覧.png)
-
 - カスタムカテゴリの作成・編集
+
+<img src="./note/img/カテゴリ一覧.png" alt="カテゴリ一覧" width="400">
+
 
 # 🛠️ 使用技術
 
