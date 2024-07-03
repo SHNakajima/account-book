@@ -9,8 +9,7 @@
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="react">
   <img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=for-the-badge&logo=openai&logoColor=white" alt="openai">
   <img src="https://img.shields.io/badge/Line-00C300?style=for-the-badge&logo=line&logoColor=white" alt="line">
-</p>
-  <img src="https://img.shields.io/badge/Line-00C300?style=for-the-badge&logo=docker&logoColor=white" alt="docker">
+  <img src="https://img.shields.io/badge/docker-1D63DE?style=for-the-badge&logo=docker&logoColor=white" alt="docker">
 </p>
 
 AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発されたWebアプリケーションです。
