@@ -1,4 +1,3 @@
-# AI家計簿
 
 <p align="center">
   <img src="./laravel/public/images/icon/app_icon.png" alt="AI家計簿アイコン" width="200" height="200">
