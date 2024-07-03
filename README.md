@@ -77,7 +77,7 @@ AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発�
    ```bash
    composer install
    npm install
-   cp .env.example .env
+   cp ./env/.phpenv.example ./env/.phpenv
    php artisan key:generate
    php artisan migrate
    ```
