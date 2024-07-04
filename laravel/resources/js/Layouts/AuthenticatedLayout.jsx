@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
+import { useState, useEffect } from 'react';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -10,6 +9,14 @@ import ApplicationIcon from '@/Components/ApplicationIcon';
 export default function Authenticated({ user, header, children }) {
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
+  const [navHeight, setNavHeight] = useState(0);
+
+  useEffect(() => {
+    const navElement = document.getElementById('main-nav');
+    if (navElement) {
+      setNavHeight(navElement.offsetHeight);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -130,10 +137,10 @@ export default function Authenticated({ user, header, children }) {
             leaveTo="opacity-0 translate-x-2 scale-95"
           >
             {/* <div className="pt-2 pb-3 space-y-1">
-                            <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                ダッシュボード
-                            </ResponsiveNavLink>
-                        </div> */}
+                          <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                              ダッシュボード
+                          </ResponsiveNavLink>
+                      </div> */}
             {/* 家計簿管理 */}
             <div className="pt-1 pb-1">
               <div className="px-4 flex items-center">
@@ -201,15 +208,17 @@ export default function Authenticated({ user, header, children }) {
         </div>
       </nav>
 
-      {header && (
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            {header}
-          </div>
-        </header>
-      )}
+      <div style={{ paddingTop: `${navHeight}px` }}>
+        {header && (
+          <header className="bg-white shadow sticky top-0 z-40">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+              {header}
+            </div>
+          </header>
+        )}
 
-      <main>{children}</main>
+        <main>{children}</main>
+      </div>
     </div>
   );
 }
