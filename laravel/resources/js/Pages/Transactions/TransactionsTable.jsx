@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import DeleteTransactionButton from './DeleteTransactionButton';
 import ModifyTransactionButton from './ModifyTransactionButton';
@@ -66,6 +66,14 @@ const TransactionCard = ({ transaction, allCategories }) => (
 
 export default function TransactionsList({ transactions, allCategories }) {
   const groupedTransactions = groupTransactionsByDate(transactions);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  useEffect(() => {
+    const header = document.querySelector('header');
+    if (header) {
+      setHeaderHeight(header.offsetHeight);
+    }
+  }, []);
 
   if (transactions.length === 0) {
     return <EmptyState />;
@@ -75,7 +83,10 @@ export default function TransactionsList({ transactions, allCategories }) {
     <div className="space-y-6">
       {groupedTransactions.map(([date, dateTransactions]) => (
         <div key={date} className="relative">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3 sticky top-0 bg-white z-10 py-2">
+          <h2
+            className="text-lg font-semibold text-gray-900 mb-3 sticky bg-white z-30 py-2"
+            style={{ top: `${headerHeight}px` }}
+          >
             {date}
           </h2>
           <div className="ml-2 grid grid-cols-1 gap-3">
