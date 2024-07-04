@@ -90,8 +90,6 @@ export default function ModifyTransactionButton({
 
           <div className="ml-2">
             <div className="mt-2 flex justify-start items-center">
-              {/* <DropDownHeadless items={allCategories} title="カテゴリー" className="w-5/12 border-black"/> */}
-
               <span className="w-1/4">カテゴリー</span>
               <span className="w-1/12 text-center">:</span>
 
@@ -137,10 +135,9 @@ export default function ModifyTransactionButton({
                 </Dropdown>
               </div>
             </div>
+            <InputError message={errors.categoryId} className="mt-2" />
 
             <div className="mt-2 flex justify-start items-center">
-              {/* <DropDownHeadless items={allCategories} title="カテゴリー" className="w-5/12 border-black"/> */}
-
               <span className="w-1/4">金額</span>
               <span className="w-1/12 text-center">:</span>
               <div className="basis-auto flex justify-start items-center">
@@ -158,10 +155,9 @@ export default function ModifyTransactionButton({
                 />
               </div>
             </div>
+            <InputError message={errors.amount} className="mt-2" />
 
             <div className="mt-2 flex justify-start items-start">
-              {/* <DropDownHeadless items={allCategories} title="カテゴリー" className="w-5/12 border-black"/> */}
-
               <span className="w-1/4">メモ</span>
               <span className="w-1/12 text-center">:</span>
             </div>
@@ -174,10 +170,10 @@ export default function ModifyTransactionButton({
               isFocused
               autoComplete="description"
             />
+            <InputError message={errors.description} className="mt-2" />
           </div>
 
           <InputError message={errors.id} className="mt-2" />
-          <InputError message={errors.targetId} className="mt-2" />
 
           <div className="mt-6 flex justify-end">
             <DangerButton className="ms-3" disabled={processing}>
