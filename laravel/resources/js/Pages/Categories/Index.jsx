@@ -24,8 +24,8 @@ export default function List({ auth, categories, status }) {
       <Transition show={hasNoCategories}>
         <div className="py-6">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-              <StickyHeader>カテゴリの追加が面倒？</StickyHeader>
+            <div className="p-4 sm:p-8">
+              <h2 className="text-lg font-semibold">カテゴリの追加が面倒？</h2>
               <div className="flex justify-center mt-6">
                 <AddInitCategoriesButton className="" />
               </div>
@@ -33,26 +33,22 @@ export default function List({ auth, categories, status }) {
           </div>
         </div>
       </Transition>
-      <div className="py-12">
+      <div className="py-8">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div className="relative p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+          <div className="relative p-4 sm:p-8">
             <div className="flex justify-between items-center mb-4">
-              <StickyHeader>収入カテゴリ</StickyHeader>
+              <h2 className="text-lg font-semibold">収入カテゴリ</h2>
               <AddCategoryButton categoryType="income" />
             </div>
-            <div className="ml-4">
-              <CategoriesTable categories={categories.incomes} />
-            </div>
+            <CategoriesTable categories={categories.incomes} />
 
             {/* 支出カテゴリ */}
             <div className="flex justify-between items-center mt-8 mb-4">
-              <StickyHeader>支出カテゴリ</StickyHeader>
+              <h2 className="text-lg font-semibold">支出カテゴリ</h2>
               <AddCategoryButton categoryType="expense" />
             </div>
 
-            <div className="ml-4">
-              <CategoriesTable categories={categories.expenses} />
-            </div>
+            <CategoriesTable categories={categories.expenses} />
           </div>
         </div>
       </div>

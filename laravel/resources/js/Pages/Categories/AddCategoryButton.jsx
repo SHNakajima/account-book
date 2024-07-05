@@ -41,7 +41,7 @@ export default function AddCategoryButton({ className, categoryType }) {
   };
 
   return (
-    <button className="flex items-center mr-8 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
+    <button className="flex items-center mr-4 px-3 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600">
       <PlusIcon className="h-6 w-4" onClick={openModal} />
 
       <Modal show={isOpenModal} onClose={closeModal}>

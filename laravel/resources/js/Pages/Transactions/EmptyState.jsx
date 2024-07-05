@@ -1,6 +1,6 @@
 export default function EmptyState() {
   return (
-    <div className="text-center py-12">
+    <div className="text-center py-8">
       <svg
         className="mx-auto h-12 w-12 text-gray-400"
         fill="none"
