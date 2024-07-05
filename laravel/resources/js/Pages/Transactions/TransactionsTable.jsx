@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
-import DeleteTransactionButton from './DeleteTransactionButton';
-import ModifyTransactionButton from './ModifyTransactionButton';
+import React, { useState, useEffect } from 'react';
 import EmptyState from './EmptyState';
+import TransactionCard from './TransactionCard';
 
 const groupTransactionsByDate = transactions => {
   const grouped = {};
@@ -14,55 +12,6 @@ const groupTransactionsByDate = transactions => {
   });
   return Object.entries(grouped).sort(([a], [b]) => new Date(b) - new Date(a));
 };
-
-const TransactionCard = ({ transaction, allCategories }) => (
-  <div className="bg-white shadow rounded-lg overflow-hidden">
-    <div className="px-4 py-3 flex items-center justify-between">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between">
-          <span className="ml-2 text-sm font-medium text-gray-900 truncate">
-            {transaction.category.display_name}
-          </span>
-          <span
-            className={`text-lg font-semibold truncate ${
-              transaction.category.type === 'income'
-                ? 'text-green-600'
-                : 'text-red-600'
-            }`}
-          >
-            {transaction.amount_str}
-          </span>
-        </div>
-        <p className="mt-1 text-sm text-gray-500 truncate">
-          {transaction.description}
-        </p>
-      </div>
-      <div className="ml-4 flex-shrink-0 flex items-center space-x-4">
-        <ModifyTransactionButton
-          patchRouteName="transactions.update"
-          target={transaction}
-          targetModelName="カテゴリ"
-          allCategories={allCategories}
-        >
-          <PencilIcon
-            className="h-5 w-5 text-gray-400 hover:text-gray-500"
-            aria-hidden="true"
-          />
-        </ModifyTransactionButton>
-        <DeleteTransactionButton
-          deletionRouteName="transactions.destroy"
-          target={transaction}
-          targetModelName="収支データ"
-        >
-          <TrashIcon
-            className="h-5 w-5 text-gray-400 hover:text-gray-500"
-            aria-hidden="true"
-          />
-        </DeleteTransactionButton>
-      </div>
-    </div>
-  </div>
-);
 
 export default function TransactionsList({ transactions, allCategories }) {
   const groupedTransactions = groupTransactionsByDate(transactions);
@@ -80,16 +29,16 @@ export default function TransactionsList({ transactions, allCategories }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       {groupedTransactions.map(([date, dateTransactions]) => (
         <div key={date} className="relative">
           <h2
-            className="text-lg font-semibold text-gray-900 mb-3 sticky bg-white z-30 py-2"
+            className="text-lg font-semibold text-gray-900  bg-gray-100 mb-3 sticky z-30 py-2 backdrop-blur"
             style={{ top: `${headerHeight}px` }}
           >
             {date}
           </h2>
-          <div className="ml-2 grid grid-cols-1 gap-3">
+          <div className="mx-2 grid grid-cols-1 gap-3">
             {dateTransactions.map(transaction => (
               <TransactionCard
                 key={transaction.id}
@@ -103,3 +52,5 @@ export default function TransactionsList({ transactions, allCategories }) {
     </div>
   );
 }
+
+// groupTransactionsByDate関数は変更なし

@@ -4,6 +4,7 @@ import CategoriesTable from './CategoriesTable';
 import AddCategoryButton from './AddCategoryButton';
 import AddInitCategoriesButton from './AddInitCategoriesButton';
 import { Transition } from '@headlessui/react';
+import StickyHeader from '@/Components/StickyHeader';
 
 // TODO: Modalコンポーネントを使う
 export default function List({ auth, categories, status }) {
@@ -23,10 +24,8 @@ export default function List({ auth, categories, status }) {
       <Transition show={hasNoCategories}>
         <div className="py-6">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-              <h2 className="font-semibold text-lg text-gray-800">
-                カテゴリの追加が面倒？
-              </h2>
+            <div className="p-4 sm:p-8">
+              <h2 className="text-lg font-semibold">カテゴリの追加が面倒？</h2>
               <div className="flex justify-center mt-6">
                 <AddInitCategoriesButton className="" />
               </div>
@@ -34,31 +33,22 @@ export default function List({ auth, categories, status }) {
           </div>
         </div>
       </Transition>
-      <div className="py-12">
+      <div className="py-8">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            {/* 収入カテゴリ */}
+          <div className="relative p-4 sm:p-8">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-lg text-gray-800">
-                収入カテゴリ
-              </h3>
+              <h2 className="text-lg font-semibold">収入カテゴリ</h2>
               <AddCategoryButton categoryType="income" />
             </div>
-            <div className="ml-4">
-              <CategoriesTable categories={categories.incomes} />
-            </div>
+            <CategoriesTable categories={categories.incomes} />
 
             {/* 支出カテゴリ */}
             <div className="flex justify-between items-center mt-8 mb-4">
-              <h3 className="font-semibold text-lg text-gray-800">
-                支出カテゴリ
-              </h3>
+              <h2 className="text-lg font-semibold">支出カテゴリ</h2>
               <AddCategoryButton categoryType="expense" />
             </div>
 
-            <div className="ml-4">
-              <CategoriesTable categories={categories.expenses} />
-            </div>
+            <CategoriesTable categories={categories.expenses} />
           </div>
         </div>
       </div>
