@@ -33,7 +33,7 @@ export default function TransactionsList({ transactions, allCategories }) {
       {groupedTransactions.map(([date, dateTransactions]) => (
         <div key={date} className="relative">
           <h2
-            className="text-lg font-semibold text-gray-900  bg-gray-100 mb-3 sticky z-30 py-2"
+            className="text-lg font-semibold text-gray-900  bg-gray-100 mb-3 sticky z-30 py-2 backdrop-blur"
             style={{ top: `${headerHeight}px` }}
           >
             {date}
