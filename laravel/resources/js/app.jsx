@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
+import { NextUIProvider } from '@nextui-org/react';
 
 const appName = 'AI家計簿';
 
@@ -20,7 +21,9 @@ createInertiaApp({
 
     root.render(
       <StrictMode>
-        <App {...props} />
+        <NextUIProvider>
+          <App {...props} />
+        </NextUIProvider>
       </StrictMode>
     );
   },
