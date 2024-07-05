@@ -197,14 +197,29 @@ class TransactionService
                 'display_ym' => $month . '月',
                 'income' => $income ?? 0,
                 'expense' => $expense ?? 0,
-                'display_income' => '+' . number_format($income),
-                'display_expense' => number_format($expense),
-                'display_sum' => (($income + $expense > 0) ? '+' : '') . number_format($income + $expense),
+                'display_income' => $this->getFormattedPrice($income),
+                'display_expense' => $this->getFormattedPrice($expense),
+                'display_sum' => $this->getFormattedPrice($income + $expense),
             ];
 
             $results[] = $result;
         }
 
         return $results;
+    }
+
+    /**
+     * 数値を記号付きの金額表記に変換する。
+     *
+     * @param string $price 金額
+     */
+    private function getFormattedPrice(int $price)
+    {
+        $formatted = number_format($price);
+        if ($price < 0) {
+            return str_replace("-", "-¥", $formatted);
+        } else {
+            return '+¥' . $formatted;
+        }
     }
 }
