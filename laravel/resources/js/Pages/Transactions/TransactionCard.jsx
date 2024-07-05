@@ -6,8 +6,8 @@ import ModifyTransactionButton from './ModifyTransactionButton';
 
 export default function TransactionCard({ transaction, allCategories }) {
   return (
-    <Card className="w-full max-w-md">
-      <CardBody className="p-4">
+    <Card>
+      <CardBody>
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">

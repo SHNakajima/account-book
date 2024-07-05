@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EmptyState from './EmptyState';
 import TransactionCard from './TransactionCard';
+import { Chip } from '@nextui-org/react';
 
 const groupTransactionsByDate = transactions => {
   const grouped = {};
@@ -32,13 +33,14 @@ export default function TransactionsList({ transactions, allCategories }) {
     <div>
       {groupedTransactions.map(([date, dateTransactions]) => (
         <div key={date} className="relative">
-          <h2
-            className="text-lg font-semibold text-gray-900  bg-gray-100 mb-3 sticky z-30 py-2 backdrop-blur"
+          <Chip
+            size="lg"
+            className="sticky z-30 my-4"
             style={{ top: `${headerHeight}px` }}
           >
             {date}
-          </h2>
-          <div className="mx-2 grid grid-cols-1 gap-3">
+          </Chip>
+          <div className="mx-2 grid grid-cols-1 gap-4">
             {dateTransactions.map(transaction => (
               <TransactionCard
                 key={transaction.id}
