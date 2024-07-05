@@ -25,7 +25,7 @@ class Transaction extends Model
             get: function (mixed $value, array $attributes) {
                 $type = $this->category->type;
                 $amount = number_format($attributes['amount']);
-                return ($type == 'income') ? '+' . $amount : '-' . $amount;
+                return ($type == 'income') ? '+¥' . $amount : '-¥' . $amount;
             }
         );
     }
