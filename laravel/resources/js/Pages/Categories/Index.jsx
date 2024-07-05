@@ -4,6 +4,7 @@ import CategoriesTable from './CategoriesTable';
 import AddCategoryButton from './AddCategoryButton';
 import AddInitCategoriesButton from './AddInitCategoriesButton';
 import { Transition } from '@headlessui/react';
+import StickyHeader from '@/Components/StickyHeader';
 
 // TODO: Modalコンポーネントを使う
 export default function List({ auth, categories, status }) {
@@ -24,9 +25,7 @@ export default function List({ auth, categories, status }) {
         <div className="py-6">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-              <h2 className="font-semibold text-lg text-gray-800">
-                カテゴリの追加が面倒？
-              </h2>
+              <StickyHeader>カテゴリの追加が面倒？</StickyHeader>
               <div className="flex justify-center mt-6">
                 <AddInitCategoriesButton className="" />
               </div>
@@ -36,12 +35,9 @@ export default function List({ auth, categories, status }) {
       </Transition>
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            {/* 収入カテゴリ */}
+          <div className="relative p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-lg text-gray-800">
-                収入カテゴリ
-              </h3>
+              <StickyHeader>収入カテゴリ</StickyHeader>
               <AddCategoryButton categoryType="income" />
             </div>
             <div className="ml-4">
@@ -50,9 +46,7 @@ export default function List({ auth, categories, status }) {
 
             {/* 支出カテゴリ */}
             <div className="flex justify-between items-center mt-8 mb-4">
-              <h3 className="font-semibold text-lg text-gray-800">
-                支出カテゴリ
-              </h3>
+              <StickyHeader>支出カテゴリ</StickyHeader>
               <AddCategoryButton categoryType="expense" />
             </div>
 
