@@ -65,7 +65,6 @@ export default function Dashboard({
                     <span className="text-indigo-800">
                       {currentMonthData.display_income}
                     </span>
-                    円
                   </span>
                 </div>
                 <div className="w-1/2 py-1 flex justify-between">
@@ -74,7 +73,6 @@ export default function Dashboard({
                     <span className="text-red-600">
                       {currentMonthData.display_expense}
                     </span>
-                    円
                   </span>
                 </div>
                 <div className="w-1/2 flex justify-between">
@@ -83,7 +81,6 @@ export default function Dashboard({
                     <span className={sumClassName}>
                       {currentMonthData.display_sum}
                     </span>
-                    円
                   </span>
                 </div>
               </div>

@@ -141,8 +141,8 @@ export default function ModifyTransactionButton({
               <span className="w-1/4">金額</span>
               <span className="w-1/12 text-center">:</span>
               <div className="basis-auto flex justify-start items-center">
-                <span className="ml-4 mr-2 text-bold ">
-                  {selected.type == 'income' ? '+' : '-'}
+                <span className="mr-2 text-bold ">
+                  {selected.type == 'income' ? '+¥' : '-¥'}
                 </span>
                 <TextInput
                   id="amount"
