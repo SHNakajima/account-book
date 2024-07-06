@@ -156,6 +156,7 @@ return [
     'attributes' => [
         'amount' => '金額',
         'category' => 'カテゴリー',
+        'categoryId' => 'カテゴリー',
     ],
 
 ];

@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import { useForm } from '@inertiajs/react';
 import {
-  Modal,
-  Button,
-  Input,
-  Textarea,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Autocomplete,
   AutocompleteItem,
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Textarea,
 } from '@nextui-org/react';
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
 
 export default function ModifyTransactionButton({
   className = '',
@@ -44,6 +44,7 @@ export default function ModifyTransactionButton({
       categoryId: target.category.id,
       amount: target.amount,
     });
+    setSelected(target.category);
     clearErrors();
   };
 
@@ -78,19 +79,14 @@ export default function ModifyTransactionButton({
                 isRequired
                 isInvalid={'categoryId' in errors}
                 errorMessage={errors.categoryId}
-                defaultSelectedKey={selected.id.toString()}
+                selectedKey={selected?.id.toString()}
                 defaultItems={allCategories}
-                onSelectionChange={keys => {
-                  if (keys === null) {
-                    setData('categoryId', null);
-                    return;
-                  }
-                  const selectedId = Array.from(keys)[0];
+                onSelectionChange={key => {
                   const selectedCategory = allCategories.find(
-                    cat => cat.id.toString() === selectedId
+                    cat => cat.id.toString() === key
                   );
                   setSelected(selectedCategory);
-                  setData('categoryId', Number(selectedId));
+                  setData('categoryId', key ? Number(key) : null);
                 }}
               >
                 {category => (
@@ -111,7 +107,7 @@ export default function ModifyTransactionButton({
                 startContent={
                   <div className="pointer-events-none flex items-center">
                     <span className="text-default-400 text-nowrap">
-                      {selected.type === 'income' ? '+¥' : '-¥'}
+                      {selected?.type === 'income' ? '+¥' : '-¥'}
                     </span>
                   </div>
                 }
