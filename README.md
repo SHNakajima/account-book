@@ -1,4 +1,4 @@
-# AI家計簿
+# AI 家計簿
 
 <p align="center">
   <img src="./laravel/public/images/icon/app_icon.png" alt="AI家計簿アイコン" width="200" height="200">
@@ -12,18 +12,18 @@
   <img src="https://img.shields.io/badge/docker-1D63DE?style=for-the-badge&logo=docker&logoColor=white" alt="docker">
 </p>
 
-AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発されたWebアプリケーションです。
+AI 家計簿は、 _誰でも続けられる家計簿_ をモットーに開発された Web アプリケーションです。
 
 # ✨ 主な機能
 
-## 1. 👤 LINE認証
+## 1. 👤 LINE 認証
 
-- 面倒な登録は必要ありません、AI家計簿を友達登録するだけで利用できます。
+- 面倒な登録は必要ありません、AI 家計簿を友達登録するだけで利用できます。
 
-## 2. 🤖 AIアシスタント・チャットボット
+## 2. 🤖 AI アシスタント・チャットボット
 
-- LINEで瞬時に収支記録
-- AI支出パターン分析（Coming Soon!）
+- LINE で瞬時に収支記録
+- AI 支出パターン分析（Coming Soon!）
 - 家計改善提案（Coming Soon!）
 - Q&A（Coming Soon!）
 
@@ -38,20 +38,24 @@ AI家計簿は、 _誰でも続けられる家計簿_ をモットーに開発�
 - 支出内訳円グラフ
 
 <img src="./note/img/ダッシュボード.png" alt="ダッシュボード" width="400">
+<img src="./note/img/ダッシュボード2.png" alt="ダッシュボード" width="400">
 
 ## 4. 💳 収支管理
+
+LINE から登録した収支データの一覧
 
 - 簡単な編集・削除機能
 
 <img src="./note/img/収支一覧.png" alt="収支一覧" width="400">
 
-
 ## 5. 🏷️ カテゴリ設定
 
+収支データに関連づけるカテゴリの一覧・編集
+
 - カスタムカテゴリの作成・編集
+- 他カテゴリへの統合機能
 
 <img src="./note/img/カテゴリ一覧.png" alt="カテゴリ一覧" width="400">
-
 
 # 🛠️ 使用技術
 
