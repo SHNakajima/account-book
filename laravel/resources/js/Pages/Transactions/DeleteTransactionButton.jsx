@@ -51,34 +51,46 @@ export default function DeleteTransactionButton({
         <TrashIcon className="h-5 w-5" />
       </Button>
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} placement="auto">
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        placement="auto"
+        classNames={{
+          base: 'bg-white dark:bg-gray-800 rounded-lg shadow-lg',
+          header: 'border-b border-gray-200 dark:border-gray-700',
+          body: 'py-6',
+          closeButton: 'hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full',
+        }}
+      >
         <ModalContent>
-          <ModalHeader>{targetModelName}を削除</ModalHeader>
+          <ModalHeader>収支データを削除しますか？</ModalHeader>
           <form onSubmit={handleDelete}>
             <ModalBody>
-              <div>
-                <DetailItem label="追加日" value={target.created_at_ymd} />
-                <DetailItem
-                  label="カテゴリ"
-                  value={target.category.display_name}
-                />
-                <DetailItem label="メモ" value={target.description} />
-                <DetailItem label="金額" value={target.amount_str} />
-              </div>
+              <Card>
+                <CardBody>
+                  <div className="space-y-3">
+                    <DetailItem label="追加日" value={target.created_at_ymd} />
+                    <DetailItem
+                      label="カテゴリ"
+                      value={target.category.display_name}
+                    />
+                    <DetailItem label="メモ" value={target.description} />
+                    <DetailItem
+                      label="金額"
+                      value={target.amount_str}
+                      isAmount
+                    />
+                  </div>
+                </CardBody>
+              </Card>
             </ModalBody>
             <ModalFooter>
-              <div className="flex justify-end space-x-2 mt-4">
-                <Button
-                  color="gray"
-                  variant="flat"
-                  onPress={() => setIsOpen(false)}
-                >
-                  キャンセル
-                </Button>
-                <Button color="danger" type="submit" disabled={processing}>
-                  削除
-                </Button>
-              </div>
+              <Button auto flat color="gray" onPress={() => setIsOpen(false)}>
+                キャンセル
+              </Button>
+              <Button auto color="danger" type="submit" disabled={processing}>
+                削除
+              </Button>
             </ModalFooter>
           </form>
         </ModalContent>
@@ -87,12 +99,17 @@ export default function DeleteTransactionButton({
   );
 }
 
-// 詳細項目用のヘルパーコンポーネント
-function DetailItem({ label, value }) {
+function DetailItem({ label, value, isAmount = false }) {
   return (
     <div className="flex justify-between items-center">
-      <span className="font-semibold">{label}:</span>
-      <span>{value}</span>
+      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        {label}
+      </span>
+      <span
+        className={`text-sm font-semibold ${isAmount ? 'text-danger' : 'text-gray-900 dark:text-gray-100'}`}
+      >
+        {value}
+      </span>
     </div>
   );
 }
