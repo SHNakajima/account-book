@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { Chip } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
 import EmptyState from './EmptyState';
 import TransactionCard from './TransactionCard';
-import { Chip } from '@nextui-org/react';
 
 const groupTransactionsByDate = transactions => {
   const grouped = {};

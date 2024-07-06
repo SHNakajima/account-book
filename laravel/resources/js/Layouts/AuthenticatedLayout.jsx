@@ -1,39 +1,76 @@
 import ApplicationIcon from '@/Components/ApplicationIcon';
-import { Link } from '@inertiajs/react';
+import {
+  ArrowRightEndOnRectangleIcon,
+  BanknotesIcon,
+  ChartPieIcon,
+  RocketLaunchIcon,
+  TagIcon,
+  UserCircleIcon,
+} from '@heroicons/react/24/outline';
+import { Head, Link } from '@inertiajs/react';
 import {
   Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownSection,
   DropdownTrigger,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  cn,
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ user, header, pageTitle, children }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
 
   useEffect(() => {
+    console.log(route().current());
+    console.log(route('categories.index'));
+
     const navElement = document.getElementById('main-nav');
     if (navElement) {
       setNavHeight(navElement.offsetHeight);
     }
   }, []);
 
+  const iconClasses =
+    'h-5 w-5 text-default-500 pointer-events-none flex-shrink-0';
+
   const menuItems = [
-    { name: '今月の収支まとめ', href: route('dashboard') },
-    { name: '収支一覧', href: route('transactions.index') },
-    { name: 'カテゴリ一覧', href: route('categories.index') },
-    { name: 'プロフィール', href: route('profile.edit') },
-    { name: '使い方・ウェルカムページ', href: route('welcome') },
+    {
+      name: '収支一覧',
+      routeName: 'transactions.index',
+      iconDom: <BanknotesIcon className={iconClasses} />,
+    },
+    {
+      name: '収支サマリー',
+      routeName: 'dashboard',
+      iconDom: <ChartPieIcon className={iconClasses} />,
+    },
+    {
+      name: 'カテゴリ一覧',
+      routeName: 'categories.index',
+      iconDom: <TagIcon className={iconClasses} />,
+    },
+    {
+      name: 'プロフィール',
+      routeName: 'profile.edit',
+      iconDom: <UserCircleIcon className={iconClasses} />,
+    },
+    {
+      name: '使い方・ウェルカムページ',
+      routeName: 'welcome',
+      iconDom: <RocketLaunchIcon className={iconClasses} />,
+    },
   ];
 
   return (
     <div className="min-h-screen bg-background">
+      <Head title={pageTitle} />
       <Navbar
         isBordered
         isMenuOpen={isMenuOpen}
@@ -47,11 +84,9 @@ export default function Authenticated({ user, header, children }) {
           </NavbarBrand>
         </NavbarContent>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem isActive={route().current('dashboard')}>
-            <Link href={route('dashboard')} color="foreground">
-              ダッシュボード
-            </Link>
+        <NavbarContent justify="center">
+          <NavbarItem className="font-semibold text-xl text-gray-800 leading-tight">
+            {pageTitle}
           </NavbarItem>
         </NavbarContent>
 
@@ -62,29 +97,40 @@ export default function Authenticated({ user, header, children }) {
                 isBordered
                 as="button"
                 className="transition-transform"
-                color="primary"
                 name={user.name}
                 size="sm"
                 src={user.picture_url}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownMenu
+              aria-label="Profile Actions"
+              variant="flat"
+              disabledKeys={[route().current()]}
+            >
               <DropdownItem key="profile">
-                <p className="font-semibold">{user.name}</p>
-                <p className="font-semibold">でログイン中</p>
+                <p className="font-semibold">{user.name} でログイン中</p>
               </DropdownItem>
-              {menuItems.map((item, index) => (
-                <DropdownItem
-                  key={`${item.name}-${index}`}
-                  color={
-                    route().current() === item.href ? 'primary' : 'foreground'
-                  }
-                  href={item.href}
-                >
-                  {item.name}
-                </DropdownItem>
-              ))}
-              <DropdownItem size="small" className="text-red-500">
+
+              <DropdownSection showDivider>
+                {menuItems.map(item => (
+                  <DropdownItem
+                    key={item.routeName}
+                    href={route(item.routeName)}
+                    startContent={item.iconDom}
+                  >
+                    {item.name}
+                  </DropdownItem>
+                ))}
+              </DropdownSection>
+              <DropdownItem
+                size="small"
+                className="text-red-500"
+                startContent={
+                  <ArrowRightEndOnRectangleIcon
+                    className={cn(iconClasses, 'text-red-500')}
+                  />
+                }
+              >
                 <Link href={route('logout')} method="post">
                   ログアウト
                 </Link>

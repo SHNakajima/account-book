@@ -1,9 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import TransactionsTable from './TransactionsTable';
-import AddTransactionButton from './AddTransactionButton';
 import useLiff from '@/hooks/useLiff';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import AddTransactionButton from './AddTransactionButton';
+import TransactionsTable from './TransactionsTable';
 
 export default function List({ auth, transactions, allCategories, status }) {
   const [displayAddButton, setDisplayAddButton] = useState(false);
@@ -16,16 +15,7 @@ export default function List({ auth, transactions, allCategories, status }) {
   }, [liff]); // 依存する値がない場合は空の配列を渡す
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          収支一覧
-        </h2>
-      }
-    >
-      <Head title="収支一覧" />
-
+    <AuthenticatedLayout user={auth.user} pageTitle={'収支一覧'}>
       <div className="py-8">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="px-4 sm:p-8 sm:rounded-lg">
