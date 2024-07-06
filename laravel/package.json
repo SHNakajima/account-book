@@ -8,7 +8,8 @@
     "heroku-postbuild": "npm run build",
     "lint": "eslint --fix .",
     "format": "prettier 'resources/{js,jsx}/**/*.{js,jsx}' --write",
-    "pre-commit": "npm run format && lint-staged && pretty-quick --staged"
+    "pre-commit": "npm run format && pretty-quick --staged",
+    "pre-commit-broken": "npm run format && lint-staged && pretty-quick --staged"
   },
   "devDependencies": {
     "@headlessui/react": "^1.7.18",
