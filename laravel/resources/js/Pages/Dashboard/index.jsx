@@ -1,9 +1,9 @@
-import DoughnutsGraph from '@/Pages/Dashboard/DoughnutsGraph';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import DoughnutsGraph from '@/Pages/Dashboard/DoughnutsGraph';
+import { router } from '@inertiajs/react';
+import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react';
 import MonthSelector from './MonthSelector';
 import MonthlyFinanceChart from './MonthlyFinanceChart';
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react';
 
 export default function Dashboard({
   auth,
@@ -27,16 +27,7 @@ export default function Dashboard({
       : 'text-red-600';
 
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-          ダッシュボード
-        </h2>
-      }
-    >
-      <Head title="ダッシュボード" />
-
+    <AuthenticatedLayout user={auth.user} pageTitle={'収支サマリー'}>
       <div className="py-8">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="overflow-hidden ">
@@ -44,7 +35,7 @@ export default function Dashboard({
               <Card>
                 <CardHeader>
                   <h2 className="font-semibold text-xl text-gray-800">
-                    収支推移
+                    月ごとの推移
                   </h2>
                 </CardHeader>
                 <Divider />
