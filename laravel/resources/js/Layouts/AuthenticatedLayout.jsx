@@ -143,7 +143,7 @@ export default function Authenticated({ user, header, pageTitle, children }) {
       <div style={{ paddingTop: `${navHeight}px` }}>
         {header && (
           <header className="bg-white shadow sticky top-0 z-40">
-            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
               {header}
             </div>
           </header>
