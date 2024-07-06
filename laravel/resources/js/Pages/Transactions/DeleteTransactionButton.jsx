@@ -1,10 +1,18 @@
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import { TrashIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
+import {
+  Modal,
+  Button,
+  Card,
+  ModalContent,
+  CardBody,
+  CardHeader,
+  Divider,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 export default function DeleteTransactionButton({
   className = '',
@@ -12,88 +20,79 @@ export default function DeleteTransactionButton({
   target,
   targetModelName,
 }) {
-  const [confirmingDeletion, setConfirmingDeletion] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
-    data,
-    setData,
     delete: destroy,
     processing,
     reset,
-    errors,
   } = useForm({
     id: target.id,
   });
 
-  const confirmDeletion = () => {
-    setConfirmingDeletion(true);
-  };
-
-  const deleteUser = e => {
+  const handleDelete = e => {
     e.preventDefault();
-
     destroy(route(deletionRouteName), {
       preserveScroll: true,
-      onSuccess: () => closeModal(),
-      onError: () => nameInput.current.focus(),
+      onSuccess: () => setIsOpen(false),
       onFinish: () => reset(),
     });
   };
 
-  const closeModal = () => {
-    setConfirmingDeletion(false);
-
-    reset();
-  };
-
   return (
-    <button className="text-red-500 hover:text-blue-700 flex items-center">
-      <TrashIcon onClick={confirmDeletion} className="h-5 w-5 mr-1" />
-      <Modal show={confirmingDeletion} onClose={closeModal}>
-        <form onSubmit={deleteUser} className="p-6">
-          <h2 className="text-lg font-medium text-gray-900">
-            {targetModelName}を削除してもよろしいですか？
-          </h2>
+    <>
+      <Button
+        isIconOnly
+        color="danger"
+        variant="light"
+        onPress={() => setIsOpen(true)}
+        className={className}
+      >
+        <TrashIcon className="h-5 w-5" />
+      </Button>
 
-          <div className="mt-6 ml-4">
-            <ul>
-              <li className="flex">
-                <span className="font-bold basis-1/4 ">追加日</span>
-                <span className="basis-1/12">：</span>
-                <span className="basis-auto">{target.created_at_ymd}</span>
-              </li>
-              <li className="flex">
-                <span className="font-bold basis-1/4 ">カテゴリ</span>
-                <span className="basis-1/12">：</span>
-                <span className="basis-auto">
-                  {target.category.display_name}
-                </span>
-              </li>
-              <li className="flex">
-                <span className="font-bold basis-1/4 ">メモ</span>
-                <span className="basis-1/12">：</span>
-                <span className="basis-auto">{target.description}</span>
-              </li>
-              <li className="flex">
-                <span className="font-bold basis-1/4 ">金額</span>
-                <span className="basis-1/12">：</span>
-                <span className="basis-auto">{target.amount_str}</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="mt-6">
-            <div className="flex justify-end items-center">
-              <SecondaryButton onClick={closeModal}>キャンセル</SecondaryButton>
-              <DangerButton className="ms-3" disabled={processing}>
-                削除
-              </DangerButton>
-            </div>
-
-            <InputError message={errors.name} className="mt-2" />
-          </div>
-        </form>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} placement="auto">
+        <ModalContent>
+          <ModalHeader>{targetModelName}を削除</ModalHeader>
+          <form onSubmit={handleDelete}>
+            <ModalBody>
+              <div>
+                <DetailItem label="追加日" value={target.created_at_ymd} />
+                <DetailItem
+                  label="カテゴリ"
+                  value={target.category.display_name}
+                />
+                <DetailItem label="メモ" value={target.description} />
+                <DetailItem label="金額" value={target.amount_str} />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <div className="flex justify-end space-x-2 mt-4">
+                <Button
+                  color="gray"
+                  variant="flat"
+                  onPress={() => setIsOpen(false)}
+                >
+                  キャンセル
+                </Button>
+                <Button color="danger" type="submit" disabled={processing}>
+                  削除
+                </Button>
+              </div>
+            </ModalFooter>
+          </form>
+        </ModalContent>
       </Modal>
-    </button>
+    </>
+  );
+}
+
+// 詳細項目用のヘルパーコンポーネント
+function DetailItem({ label, value }) {
+  return (
+    <div className="flex justify-between items-center">
+      <span className="font-semibold">{label}:</span>
+      <span>{value}</span>
+    </div>
   );
 }

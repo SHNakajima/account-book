@@ -36,7 +36,7 @@ export default function TransactionsList({ transactions, allCategories }) {
           <Chip
             size="lg"
             className="sticky z-30 my-4"
-            style={{ top: `${headerHeight}px` }}
+            style={{ top: `${headerHeight + 8}px` }}
           >
             {date}
           </Chip>
