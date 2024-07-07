@@ -16,7 +16,7 @@
       "contents": [
         {
           "type": "text",
-          "text": "収支データを登録しました",
+          "text": Auth::user()->name . "さんの収支データを登録しました",
           "weight": "bold",
           "color": "#1DB446",
           "size": "sm"
