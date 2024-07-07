@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useForm } from '@inertiajs/react';
 import {
-  Modal,
   Button,
   Card,
-  ModalContent,
   CardBody,
-  CardHeader,
-  Divider,
-  ModalHeader,
+  Modal,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
 } from '@nextui-org/react';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 
 export default function DeleteTransactionButton({
   className = '',
@@ -88,7 +86,13 @@ export default function DeleteTransactionButton({
               <Button auto flat color="gray" onPress={() => setIsOpen(false)}>
                 キャンセル
               </Button>
-              <Button auto color="danger" type="submit" disabled={processing}>
+              <Button
+                auto
+                color="danger"
+                type="submit"
+                disabled={processing}
+                isLoading={processing}
+              >
                 削除
               </Button>
             </ModalFooter>

@@ -128,7 +128,13 @@ export default function ModifyTransactionButton({
               <Button auto flat color="gray" onPress={() => setIsOpen(false)}>
                 キャンセル
               </Button>
-              <Button auto color="primary" type="submit" disabled={processing}>
+              <Button
+                auto
+                color="primary"
+                type="submit"
+                disabled={processing}
+                isLoading={processing}
+              >
                 更新
               </Button>
             </ModalFooter>
