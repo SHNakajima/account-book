@@ -74,7 +74,7 @@ class ChatGPTService
     private function generatePrompt($text, $categoryListStr): array
     {
         return [
-            'model' => 'gpt-3.5-turbo-0613',
+            'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
                     'role' => 'user',
